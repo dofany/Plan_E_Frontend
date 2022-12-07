@@ -1,0 +1,22 @@
+body {
+    background-color: #D2EEF7 !important;
+}
+
+input::placeholder {
+    font-size: 15px;
+    /*font-style: italic;*/
+}
+
+
+.find-btn {
+    text-align: center;
+}
+
+.me-1 {
+    display :inline-block;
+}
+
+.login-btn {
+    background-color: #D2EEF7;
+}
+
