@@ -7,19 +7,12 @@ import {
     MDBCard,
     MDBCardBody,
     MDBInput,
-    MDBIcon,
-    MDBCheckbox, MDBValidationItem, MDBValidation, MDBSpinner
+    MDBCheckbox
 }
     from 'mdb-react-ui-kit';
 import './Login.css';
-import {Link} from "react-router-dom";
 import axios from "axios";
 import Loading from "../common/Loading";
-import {Button, Modal} from "react-bootstrap";
-
-function loginClick() {
-    document.location.href = '/'
-}
 
 /**
  * 로그인 기능
@@ -37,14 +30,11 @@ function Login() {
         checkNumber: ''
     };
 
+
     // 로그인 입력값
     const [loginInputValue, setLoginInputValue] = useState(loginForm);
     // 회원가입 입력값
     const [singUpInputValue, setSignUpInputValue] = useState(loginForm);
-
-    // const {inputEmail, inputPw} = loginInputValue;
-
-    // const [showLoading, setShowLoading] = useState(false);
 
     // 로딩바 표시 상태값
     const [loading, setLoading] = useState(false);
@@ -55,10 +45,7 @@ function Login() {
 
     const [changePwClickEv, setChangePwClickEv] = useState(false);
 
-    // 모달 초기화
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+
 
     // 입력 Form 초기화
     const formInit = () => {
@@ -99,8 +86,6 @@ function Login() {
             }
         )
         .then(res => {
-            console.log(res)
-            console.log('res.data :: ', res.data)
             // setShowLoading(false);
 
             // setLoading(false);
@@ -119,7 +104,7 @@ function Login() {
             // }
             // 작업 완료 되면 페이지 이동(새로고침)
             // setLoading(false);
-            if (res.data == 'Y') {
+            if (res.data === 'Y') {
 
                 // document.location.href = '/'
             }
@@ -138,6 +123,30 @@ function Login() {
 
     // 가입신청 버튼 클릭
     const requestSignUp = () => {
+
+        if(singUpInputValue.userNm === '') {
+            alert('이름을 입력해주세요.');
+            return;
+        }
+
+        if(singUpInputValue.userEmail === '') {
+            alert('이메일 주소를 입력해주세요.');
+            return;
+        }
+
+        if(singUpInputValue.userPw === '') {
+            alert('비밀번호를 입력해주세요.')
+            return;
+        }
+
+        if(singUpInputValue.userPwCheck === '') {
+            alert('비밀번호 확인란을 입력해주세요.')
+        }
+
+        if(singUpInputValue.userPw !== singUpInputValue.userPwCheck) {
+            alert('비밀번호가 일치하지 않습니다.');
+        }
+
         const headers = {
             'Content-Type' : 'application/json'
         }
@@ -170,13 +179,32 @@ function Login() {
 
     }
 
+
     // 이전 버튼
-    const cancelClick = () => {
+    const cancelClick = (data) => {
         // handleShow();
+        // modalInputValue.text = '주의';
+        // modalInputValue.title = '이전으로 돌아가면 작업 내용이 삭제됩니다.';
+        //
+        // setModalData(modalInputValue);
+        // setModalOpenYn(true);
+        //
+        // if(data) {
+        //     setSignUpClickEv(false);
+        //     setChangePwClickEv(false);
+        //     // setModalOpenYn(false);
+        //     formInit();
+        // } else {
+        //     // setModalOpenYn(false);
+        // }
+        // console.log(data);
+        // //
         setSignUpClickEv(false);
         setChangePwClickEv(false);
         formInit();
     }
+
+
 
     return (
         <MDBContainer fluid>
@@ -324,25 +352,6 @@ function Login() {
                                 <hr className="my-4"/>
 
                                 <div className="find-btn">
-                                    <Modal
-                                        show={show}
-                                        onHide={handleClose}
-                                        backdrop="static"
-                                        keyboard={false}>
-                                        <Modal.Header closeButton>
-                                            <Modal.Title>주의</Modal.Title>
-                                        </Modal.Header>
-                                        <Modal.Body>
-                                            이전으로 돌아갈시 기존 작업 내용이 사라집니다.
-                                        </Modal.Body>
-                                        <Modal.Footer>
-                                            <Button variant="secondary" onClick={ handleClose }>
-                                                Close
-                                            </Button>
-                                            <Button variant="primary" onClick={ handleClose }>Understood</Button>
-                                        </Modal.Footer>
-                                    </Modal>
-
                                     <MDBBtn className='me-1'
                                             // style={{ backgroundColor: '#26B7E6' }}
                                             color="secondary"
@@ -408,6 +417,7 @@ function Login() {
                             </MDBCardBody> : null
                         }
                         {/*------------ 패스워드 찾기 입력 form end------------*/}
+                        {/*{ modalOpenYn ? <ModalPop title={modalData.title} text={modalData.text} modalClose={cancelClick}/> : null }*/}
                     </MDBCard>
 
                 </MDBCol>
