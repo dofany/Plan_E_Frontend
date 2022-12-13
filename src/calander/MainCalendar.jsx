@@ -42,6 +42,7 @@ export default class MainCalendar extends React.Component {
                         eventContent={renderEventContent} // custom render function
                         eventClick={this.handleEventClick}
                         eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
+                        // eventBackgroundColor="#ff0000"
                         // titleFormat='dddd, MMMM D, YYYY'
                         titleFormat={(date) => { // title 설정
                             return date.date.year +"년 "+(date.date.month +1)+"월";
@@ -102,7 +103,7 @@ export default class MainCalendar extends React.Component {
                         </Menu>
                     </Sidebar>
                     <main>
-                        <button onClick={() => collapseSidebar()}>Collapse</button>
+                        {/*<button onClick={() => collapseSidebar()}>Collapse</button>*/}
                     </main>
                 </ProSidebarProvider>
             </div>
@@ -149,9 +150,9 @@ export default class MainCalendar extends React.Component {
     }
 
     handleEventClick = (clickInfo) => {
-        if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-            clickInfo.event.remove()
-        }
+        // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+        //     clickInfo.event.remove();
+        // }
     }
 
     handleEvents = (events) => {

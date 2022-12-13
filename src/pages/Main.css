@@ -1,0 +1,24 @@
+body {
+    background-color: #ffffff !important;
+}
+
+.fc .fc-button-primary {
+    background-color:#387BA3 !important;
+    color: #ffffff !important;
+}
+
+.fc-daygrid-day-number {
+    color: black !important;
+}
+
+.fc-col-header-cell-cushion  {
+    color: #8f8f8f !important;
+}
+
+.fc-day-sat .fc-daygrid-day-number { color:blue !important; }
+.fc-day-sun .fc-daygrid-day-number { color:red !important;  }
+
+.fc-day-today {
+    background-color: #D2EEF7 !important;
+}
+
