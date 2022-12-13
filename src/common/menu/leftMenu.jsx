@@ -1,6 +1,7 @@
 import {Menu, MenuItem, Sidebar, SubMenu, useProSidebar} from "react-pro-sidebar";
 
 import React from 'react';
+import {GiHamburgerMenu} from "react-icons/gi";
 // import {FaBeer, GiHamburgerMenu} from "react-icons/all";
 
 
@@ -23,8 +24,8 @@ export default function Layout({ children }) {
       </Sidebar>
       <main style={{ display: 'flex', padding: 10 }}>
         <div>
-          <a id="show-sidebar" className="btn btn-sm btn-dark" href="#">
-            {/*<GiHamburgerMenu onClick={() => {toggleSidebar()}}></GiHamburgerMenu>*/}
+          <a id="show-sidebar" className="btn btn-sm btn-dark" href="#" onClick={() => {toggleSidebar()}}>
+            <GiHamburgerMenu></GiHamburgerMenu>
           </a>
 
           {/*<button className="sb-button" onClick={() => {toggleSidebar()}} >*/}

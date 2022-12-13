@@ -22,3 +22,14 @@ body {
     background-color: #D2EEF7 !important;
 }
 
+.btn .btn-sm .btn-dark {
+    background-color: #332d2d !important;
+    color: #fff;
+    box-shadow: 0 4px 9px -4px #332d2d;
+}
+
+.btn-dark {
+    background-color: #332d2d;
+    color: #fff;
+    box-shadow: 0 4px 9px -4px #332d2d;
+}
