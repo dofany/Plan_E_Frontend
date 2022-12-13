@@ -32,6 +32,7 @@ export default class MainCalendar extends React.Component {
                         }}
                         // locale="ko"
                         initialView='dayGridMonth'
+                        height="100%"
                         editable={true}
                         selectable={true}
                         selectMirror={true}
