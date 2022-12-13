@@ -105,8 +105,7 @@ function Login() {
             // 작업 완료 되면 페이지 이동(새로고침)
             setLoading(false);
             if (res.data === 'Y') {
-
-                // document.location.href = '/'
+                document.location.href = '/main'
             }
         })
         .catch()

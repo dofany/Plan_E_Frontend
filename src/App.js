@@ -16,12 +16,13 @@ function App() {
       // <Login/>
       <BrowserRouter>
         <Nav />
-        <Routes>
-          <Route exact path="/" element={<Login/>} />
-          <Route exact path="/login" element={<Login/>} />
+          <Routes>
+            <Route exact path="/" element={<Login/>} />
+            <Route exact path="/login" element={<Login/>} />
+            <Route exact path="/main" element={<Main/>} />
           {/* 전달할 props가 있을경우 아래와 같이 */}
           {/*<Route exact path="/info" render={() => <Info userInfo={userInfo} />} />*/}
-        </Routes>
+          </Routes>
       </BrowserRouter>
   );
 }
