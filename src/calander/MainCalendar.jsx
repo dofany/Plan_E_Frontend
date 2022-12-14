@@ -9,6 +9,10 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { INITIAL_EVENTS, createEventId } from '../pages/event-utils';
 import {Menu, MenuItem, ProSidebarProvider, Sidebar, SubMenu} from "react-pro-sidebar";
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import bootstrap5Plugin from '@fullcalendar/bootstrap5';
+
 
 
 export default class MainCalendar extends React.Component {
@@ -24,11 +28,31 @@ export default class MainCalendar extends React.Component {
                 {<Layout></Layout>}
                 <div className='calendar-main'>
                     <FullCalendar
-                        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin]}
+                        themeSystem="bootstrap5"
+                        // customButtons={{
+                        //     myCustomButton: {
+                        //         text: 'custom!',
+                        //         icon: 'MdOutlineCalendarToday',
+                        //         click: function () {
+                        //             alert('clicked the custom button!');
+                        //         },
+                        //     },
+                        // }}
                         headerToolbar={{
                             left: 'prev,next today',
                             center: 'title',
                             right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                        }}
+                        buttonIcons={{
+                            prev: 'caret-left',
+                            next: 'caret-right',
+                            prevYear: 'chevrons-left', // double chevron
+                            nextYear: 'chevrons-right', // double chevron
+                            today: 'bi bi-calendar-heart',
+                            dayGridMonth: 'calendar-month',
+                            timeGridWeek: 'calendar-week',
+                            timeGridDay: 'calendar-day'
                         }}
                         // locale="ko"
                         initialView='dayGridMonth'

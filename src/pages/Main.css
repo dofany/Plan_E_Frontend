@@ -42,3 +42,15 @@ body {
     z-index: 3;
     background-color: #EEF8FB !important;
 }
+
+
+.fc-dayGridMonth-button, .fc-timeGridWeek-button, .fc-timeGridDay-button, .fc-prev-button, .fc-next-button, .fc-today-button {
+    font-size: 20px !important;
+    padding: 5px 15px !important;
+}
+
+
+
+/*.fc-today-button {*/
+/*    width: 30px;*/
+/*}*/
