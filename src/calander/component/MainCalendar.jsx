@@ -12,6 +12,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import LeftMenu from '../../common/component/menu/LeftMenu'
+import Header from "../../common/component/header/Header";
 
 
 
@@ -25,9 +26,9 @@ export default class MainCalendar extends React.Component {
     render() {
         return (
             <div className='demo-app'>
-                {/*{<Layout></Layout>}*/}
                 {<LeftMenu></LeftMenu>}
                 <div className='calendar-main'>
+                    {/*<Header></Header>*/}
                     <FullCalendar
                         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin]}
                         themeSystem="bootstrap5"

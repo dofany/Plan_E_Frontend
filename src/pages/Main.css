@@ -66,3 +66,9 @@ body {
     color: var(--fc-event-text-color, #fff);
     background-color: #78AEDF;
 }
+
+
+/*.calendar-main {*/
+/*    flex-grow: 1;*/
+/*    padding: 3em;*/
+/*}*/
