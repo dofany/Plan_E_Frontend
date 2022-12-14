@@ -12,7 +12,7 @@ import {
     from 'mdb-react-ui-kit';
 import './Login.css';
 import axios from "axios";
-import Loading from "../common/Loading";
+import Loading from "../common/component/Loading/Loading";
 
 /**
  * 로그인 기능

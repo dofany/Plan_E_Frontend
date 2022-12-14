@@ -3,7 +3,7 @@ body {
 }
 
 .fc .fc-button-primary {
-    background-color:#387BA3 !important;
+    /*background-color:#387BA3 !important;*/
     color: #ffffff !important;
 }
 
@@ -44,12 +44,16 @@ body {
 }
 
 
-.fc-dayGridMonth-button, .fc-timeGridWeek-button, .fc-timeGridDay-button, .fc-prev-button, .fc-next-button, .fc-today-button {
+.fc-dayGridMonth-button, .fc-timeGridWeek-button, .fc-timeGridDay-button, .fc-prev-button, .fc-next-button, .fc-today-button,
+.fc-prevYear-button, .fc-nextYear-button{
     font-size: 20px !important;
     padding: 5px 15px !important;
+    background-color: #4288C3 !important;
 }
 
-
+.fc-toolbar-title {
+    font-weight: bold !important;
+}
 
 /*.fc-today-button {*/
 /*    width: 30px;*/
