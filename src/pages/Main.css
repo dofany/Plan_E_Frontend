@@ -7,6 +7,7 @@ body {
     color: #ffffff !important;
 }
 
+
 .fc-daygrid-day-number {
     color: black !important;
 }
@@ -19,7 +20,7 @@ body {
 .fc-day-sun .fc-daygrid-day-number { color:red !important;  }
 
 .fc-day-today {
-    background-color: #D2EEF7 !important;
+    background-color: #F3F8FB !important;
 }
 
 .btn .btn-sm .btn-dark {
@@ -48,7 +49,8 @@ body {
 .fc-prevYear-button, .fc-nextYear-button{
     font-size: 20px !important;
     padding: 5px 15px !important;
-    background-color: #4288C3 !important;
+    background-color: #F3F8FB !important;
+    color: #0E406C !important;
 }
 
 .fc-toolbar-title {
@@ -58,3 +60,9 @@ body {
 /*.fc-today-button {*/
 /*    width: 30px;*/
 /*}*/
+
+.fc-h-event .fc-event-main {
+    color: #fff;
+    color: var(--fc-event-text-color, #fff);
+    background-color: #78AEDF;
+}

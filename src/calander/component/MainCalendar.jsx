@@ -111,50 +111,6 @@ export default class MainCalendar extends React.Component {
         )
     }
 
-    renderSidebar() {
-
-        return (
-            <div style={{ display: 'flex', height: '100%' }}>
-                <div>
-                    {/* small and big change using menucollapse state */}
-                    <h2>Big Logo</h2>
-                </div>
-                <ProSidebar>
-                    <SidebarContent>
-                        <LeftMenu renderExpandIcon={({ open }) => <span>{open ? '-' : '+'}</span>}>
-                            <SubMenu label="Charts">
-                                <MenuItem> Pie charts</MenuItem>
-                                <MenuItem> Line charts</MenuItem>
-                                <MenuItem> Bar charts</MenuItem>
-                            </SubMenu>
-                            <MenuItem> Calendar</MenuItem>
-                            <MenuItem> E-commerce</MenuItem>
-                            <MenuItem> Examples</MenuItem>
-                        </LeftMenu>
-                    </SidebarContent>
-                    <main>
-                        {/*<button onClick={() => collapseSidebar()}>Collapse</button>*/}
-                    </main>
-                </ProSidebar>
-            </div>
-            // <div className='demo-app-sidebar'>
-            //   <div className='demo-app-sidebar-section'>
-            //     <h2>정보</h2>
-            //     <ul>
-            //       <li>날짜를 선택하면 새 이벤트를 생성하라는 메시지가 표시됩니다.</li>
-            //       <li>이벤트 드래그, 드롭 및 크기 조정</li>
-            //       <li>이벤트를 삭제하려면 클릭하세요.</li>
-            //     </ul>
-            //   </div>
-            //   <div className='demo-app-sidebar-section'>
-            //     <h2>모든 일정 ({this.state.currentEvents.length})</h2>
-            //     <ul>
-            //       {this.state.currentEvents.map(renderSidebarEvent)}
-            //     </ul>
-            //   </div>
-            // </div>
-        )
-    }
 
     handleWeekendsToggle = () => {
         this.setState({
@@ -180,9 +136,9 @@ export default class MainCalendar extends React.Component {
     }
 
     handleEventClick = (clickInfo) => {
-        // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-        //     clickInfo.event.remove();
-        // }
+        if (window.confirm(`'${clickInfo.event.title}' 일정을 삭제하시겠습니까?`)) {
+            clickInfo.event.remove();
+        }
     }
 
     handleEvents = (events) => {
