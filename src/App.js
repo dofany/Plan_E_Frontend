@@ -5,8 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import UserListComponent from "./user/component/UserListComponent";
 
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Login from "./pages/Login";
-import Main from "./pages/Main";
+import Login from "./pages/login/Login";
+import Main from "./pages/main/Main";
 import Nav from "./pages/Nav";
 
 

@@ -12,7 +12,9 @@ import {
     from 'mdb-react-ui-kit';
 import './Login.css';
 import axios from "axios";
-import Loading from "../common/component/Loading/Loading";
+import Loading from "../../common/component/Loading/Loading";
+import Timer from "../../common/component/date/Timer";
+import ModalPop from "../../common/component/modal/ModalPop";
 
 /**
  * 로그인 기능
@@ -31,6 +33,32 @@ function Login() {
     };
 
 
+    /**
+     * 모달 처리 샘플
+     * @type {{callback: null, text: string, title: string, open: boolean}}
+     */
+    const modalForm = {
+        title: '',
+        text: '',
+        open: false,
+        callback: null
+    };
+    const [modalFormState, setModalFormState] = useState(modalForm);
+
+    // 모달 호출 함수 샘플
+    function modalOpen(title, text, callback) {
+        setModalFormState({
+            ...modalFormState,
+            title: title,
+            text: text,
+            open: true,
+            callback: callback
+        });
+
+        // setModalFormState(modalForm);
+    }
+
+
     // 로그인 입력값
     const [loginInputValue, setLoginInputValue] = useState(loginForm);
     // 회원가입 입력값
@@ -43,6 +71,7 @@ function Login() {
     const [signUpClickEv, setSignUpClickEv] = useState(false);
     const [checkNumberBox, setCheckNumberBox] = useState(false);
 
+    // 패스워드 찾기_패스워드 변경 상태값
     const [changePwClickEv, setChangePwClickEv] = useState(false);
 
 
@@ -51,6 +80,13 @@ function Login() {
     const formInit = () => {
         setLoginInputValue(loginForm);
         setSignUpInputValue(loginForm);
+    }
+
+    const stateInit = () => {
+        setModalFormState(modalForm);
+        setSignUpClickEv(false);
+        setChangePwClickEv(false);
+        setCheckNumberBox(false);
     }
 
     // 로그인 입력값 변경 감지
@@ -124,7 +160,7 @@ function Login() {
     const requestSignUp = () => {
 
         if(singUpInputValue.userNm === '') {
-            alert('이름을 입력해주세요.');
+            modalOpen("주의", "이름을 입력해주세요.")
             return;
         }
 
@@ -168,6 +204,13 @@ function Login() {
             .catch()
     }
 
+    // 회원가입 인증번호 확인 요청
+    const requestSignUpCheck = () => {
+        alert('인증키 입력값 : ' + singUpInputValue.checkNumber);
+        // 요청 서비스 call
+
+    }
+
     // 패스워드 찾기 버튼 클릭
     const changePw = () => {
         setChangePwClickEv(true);
@@ -180,36 +223,36 @@ function Login() {
 
 
     // 이전 버튼
-    const cancelClick = (data) => {
-        // handleShow();
-        // modalInputValue.text = '주의';
-        // modalInputValue.title = '이전으로 돌아가면 작업 내용이 삭제됩니다.';
-        //
-        // setModalData(modalInputValue);
-        // setModalOpenYn(true);
-        //
-        // if(data) {
-        //     setSignUpClickEv(false);
-        //     setChangePwClickEv(false);
-        //     // setModalOpenYn(false);
-        //     formInit();
-        // } else {
-        //     // setModalOpenYn(false);
-        // }
-        // console.log(data);
-        // //
-        setSignUpClickEv(false);
-        setChangePwClickEv(false);
-        formInit();
+    const cancelClick = () => {
+        modalOpen("주의", "이전으로 돌아가면 작업 내용이 삭제됩니다.",(data) => {
+            // 창을 닫을때("OK")
+            if(data) {
+                // 모든 state, form 초기화
+                stateInit();
+                formInit();
+            }
+            // 창을 닫을때("취소")
+            else {
+                // 모달 비활성
+                setModalFormState(modalForm);
+                return;
+            }
+        });
+
     }
 
 
 
     return (
         <MDBContainer fluid>
+            {/*모달 호출 샘플*/}
+            { modalFormState.open ? <ModalPop modalForm = {modalFormState}/> : null}
+
+            {/*로딩바 호출 샘플*/}
             <div>
                 {loading ? <Loading /> : null}
             </div>
+
             <MDBRow className='d-flex justify-content-center align-items-center h-100'>
                 <MDBCol col='12'>
 
@@ -328,6 +371,15 @@ function Login() {
                                           disabled={ checkNumberBox }
                                           required/>
 
+
+                                { checkNumberBox ?
+                                    <MDBCol size="auto">
+                                      <span id='textExample2' className='form-text'>
+                                        <Timer min={5}/>
+                                      </span>
+                                    </MDBCol>
+                                : null}
+
                                 { checkNumberBox ?
                                     <MDBInput wrapperClass='mb-4 w-100'
                                               placeholder="6자리 인증키를 입력해주세요"
@@ -335,18 +387,27 @@ function Login() {
                                               id='formControlCheckNumber'
                                               type='text'
                                               size="lg"
+                                              maxLength="6"
                                               name='checkNumber'
                                               value={ singUpInputValue.checkNumber }
                                               onChange={ handleSignUpInputValue }
                                               autoFocus={true}
-                                              required/>
+                                              required>
+                                    </MDBInput>
                                     : null }
 
-                                <MDBBtn size='lg'
+
+                                { checkNumberBox ?
+                                    <MDBBtn size='lg'
+                                            style={{ backgroundColor: '#26B7E6' }}
+                                            onClick={ requestSignUpCheck }>
+                                        인증확인
+                                    </MDBBtn> :
+                                    <MDBBtn size='lg'
                                         style={{ backgroundColor: '#26B7E6' }}
                                         onClick={ requestSignUp }>
-                                    가입신청
-                                </MDBBtn>
+                                        가입신청
+                                    </MDBBtn>}
 
                                 <hr className="my-4"/>
 

@@ -20,3 +20,6 @@ input::placeholder {
     background-color: #D2EEF7;
 }
 
+.timer {
+    text-align: right;
+}

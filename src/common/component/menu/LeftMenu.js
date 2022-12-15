@@ -25,6 +25,7 @@ import "./LeftMenu.css";
 import {CgUserlane} from "react-icons/cg";
 import PersonalProfile from "../../../user/component/profile/UserProfile";
 import {Modal} from "react-bootstrap";
+import ModalPop from "../modal/ModalPop";
 
 
 const LeftMenu = () => {
@@ -41,9 +42,45 @@ const LeftMenu = () => {
     const [userPop, setUserPop] = useState(false);
 
 
-    // setMenuActive({
-    //     main: true
-    // });
+
+    /**
+     * 모달 처리 샘플
+     * @type {{callback: null, text: string, title: string, open: boolean}}
+     */
+    const modalForm = {
+        title: '',
+        text: '',
+        open: false,
+        callback: null
+    };
+    const [modalFormState, setModalFormState] = useState(modalForm);
+
+
+
+    // 입력 Form 초기화
+    const formInit = () => {
+        setMenuActive(menuForm);
+
+    }
+
+    const stateInit = () => {
+        setModalFormState(modalForm);
+        setUserPop(false);
+    }
+
+
+    // 모달 호출 함수 샘플
+    function modalOpen(title, text, callback) {
+        setModalFormState({
+            ...modalFormState,
+            title: title,
+            text: text,
+            open: true,
+            callback: callback
+        });
+
+    }
+
 
 
     //create a custom function that will change menucollapse state from false to true and true to false
@@ -52,8 +89,23 @@ const LeftMenu = () => {
         menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
     };
 
+    // 로그아웃 이벤트 처리
     const logoutClick = () => {
-        document.location.href = '/login'
+        modalOpen("로그아웃", "로그인 창으로 돌아갑니다.",(data) => {
+            // 창을 닫을때("OK")
+            if(data) {
+                // 모든 state, form 초기화
+                stateInit();
+                formInit();
+                document.location.href = '/login'
+            }
+            // 창을 닫을때("취소")
+            else {
+                // 모달 비활성
+                setModalFormState(modalForm);
+                return;
+            }
+        });
     }
 
     const menuClick = (e) => {
@@ -77,6 +129,7 @@ const LeftMenu = () => {
     }
     return (
         <>
+            { modalFormState.open ? <ModalPop modalForm = {modalFormState}/> : null}
             <Modal show={userPop}>
                 <PersonalProfile popEvent = {popEvent}></PersonalProfile>
             </Modal>

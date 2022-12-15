@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import Loading from "../common/Loading";
+import Loading from "./component/Loading/Loading";
 
 // api 호출 공통 함수
 
