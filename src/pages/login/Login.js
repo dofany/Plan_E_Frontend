@@ -160,6 +160,7 @@ function Login() {
     // 가입신청 버튼 클릭
     const requestSignUp = () => {
 
+        setCheckNumberBox(false);
         if(singUpInputValue.userNm === '') {
             ToastPop({
                 toastOpenYn: true,
@@ -237,7 +238,11 @@ function Login() {
                 setLoading(false);
                 if (res.data) {
                     setCheckNumberBox(true);
-                    ToastPop({toastOpenYn: true, type: 'info', message: "입력하신 이메일로 인증번호가 발송되었습니다."});
+                    ToastPop({
+                        toastOpenYn: true,
+                        type: 'info',
+                        message: "입력하신 이메일로 인증번호가 발송되었습니다."
+                    });
                 }
             })
             .catch()
@@ -445,12 +450,14 @@ function Login() {
                                             style={{ backgroundColor: '#26B7E6' }}
                                             onClick={ requestSignUpCheck }>
                                         인증확인
-                                    </MDBBtn> :
+                                    </MDBBtn>
+                                    :
                                     <MDBBtn size='lg'
                                         style={{ backgroundColor: '#26B7E6' }}
                                         onClick={ requestSignUp }>
                                         가입신청
-                                    </MDBBtn>}
+                                    </MDBBtn>
+                                }
 
                                 <hr className="my-4"/>
 
@@ -461,6 +468,14 @@ function Login() {
                                             onClick={ cancelClick }>
                                         이전으로
                                     </MDBBtn>
+                                    { checkNumberBox ?
+                                        <MDBBtn className='me-1'
+                                            // style={{ backgroundColor: '#26B7E6' }}
+                                                color="secondary"
+                                                onClick={ requestSignUp }>
+                                            인증번호 재발송
+                                        </MDBBtn> : null
+                                    }
                                 </div>
 
                             </MDBCardBody> : null

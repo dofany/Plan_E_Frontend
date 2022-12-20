@@ -25,14 +25,14 @@ function ToastPop({toastOpenYn, type, message, options}) {
             };
         }
         const toastOptions = {
-            position: options.position === undefined ? "bottom-center" : options.position,
-            autoClose: options.sec === undefined ? 5000 : options.sec,
-            hideProgressBar: options.hideProgressBar === undefined ? false : options.hideProgressBar,
-            closeOnClick: options.closeOnClick === undefined ? true : options.closeOnClick,
-            pauseOnHover: options.pauseOnHover === undefined ? true : options.pauseOnHover,
-            draggable: options.draggable === undefined ? true : options.draggable,
-            progress: options.progress === undefined ? undefined : options.progress,
-            theme: options.theme === undefined ? "light" : options.theme
+            position: (options.position === undefined || options.position === null) ? "bottom-center" : options.position,
+            autoClose: (options.sec === undefined || options.sec === null) ? 5000 : options.sec,
+            hideProgressBar: (options.hideProgressBar === undefined || options.hideProgressBar === null) ? false : options.hideProgressBar,
+            closeOnClick: (options.closeOnClick === undefined || options.closeOnClick === null) ? true : options.closeOnClick,
+            pauseOnHover: (options.pauseOnHover === undefined || options.pauseOnHover === null) ? true : options.pauseOnHover,
+            draggable: (options.draggable === undefined || options.draggable === null) ? true : options.draggable,
+            progress: (options.progress === undefined || options.progress === null) ? undefined : options.progress,
+            theme: (options.theme === undefined || options.theme === null) ? "light" : options.theme
         };
 
         let notify;
