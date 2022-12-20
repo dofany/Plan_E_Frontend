@@ -15,6 +15,8 @@ import axios from "axios";
 import Loading from "../../common/component/Loading/Loading";
 import Timer from "../../common/component/date/Timer";
 import ModalPop from "../../common/component/modal/ModalPop";
+import 'react-toastify/dist/ReactToastify.css';
+import ToastPop from "../../common/component/toast/ToastPop";
 
 /**
  * 로그인 기능
@@ -22,6 +24,7 @@ import ModalPop from "../../common/component/modal/ModalPop";
  * @constructor
  */
 function Login() {
+
     const loginForm = {
         inputEmail: '',
         inputPw: '',
@@ -32,30 +35,29 @@ function Login() {
         checkNumber: ''
     };
 
+    const [textInputRef, setTextInputRef] = useState(false);
 
     /**
      * 모달 처리 샘플
-     * @type {{callback: null, text: string, title: string, open: boolean}}
+     * @type {{callback: null, message: string, title: string, open: boolean}}
      */
     const modalForm = {
         title: '',
-        text: '',
+        message: '',
         open: false,
         callback: null
     };
     const [modalFormState, setModalFormState] = useState(modalForm);
 
     // 모달 호출 함수 샘플
-    function modalOpen(title, text, callback) {
+    function modalOpen(title, message, callback) {
         setModalFormState({
-            ...modalFormState,
-            title: title,
-            text: text,
             open: true,
+            title: title,
+            message: message,
             callback: callback
         });
 
-        // setModalFormState(modalForm);
     }
 
 
@@ -107,7 +109,6 @@ function Login() {
 
     // 로그인 버튼 클릭 이벤트
     const loginClick = () => {
-        console.log(loginInputValue);
         const headers = {
             'Content-Type' : 'application/json'
         }
@@ -160,26 +161,63 @@ function Login() {
     const requestSignUp = () => {
 
         if(singUpInputValue.userNm === '') {
-            modalOpen("주의", "이름을 입력해주세요.")
+            ToastPop({
+                toastOpenYn: true,
+                type: 'warning',
+                message: "이름을 입력해주세요.",
+                options: {
+                    sec: false
+                }
+            });
             return;
         }
 
         if(singUpInputValue.userEmail === '') {
-            alert('이메일 주소를 입력해주세요.');
+            ToastPop({
+                toastOpenYn: true,
+                type: 'warning',
+                message: "이메일 주소를 입력해주세요.",
+                options: {
+                    sec: false
+                }
+            });
             return;
         }
 
         if(singUpInputValue.userPw === '') {
-            alert('비밀번호를 입력해주세요.')
+            ToastPop({
+                toastOpenYn: true,
+                type: 'warning',
+                message: "비밀번호를 입력해주세요.",
+                options: {
+                    sec: false
+                }
+            });
             return;
         }
 
         if(singUpInputValue.userPwCheck === '') {
-            alert('비밀번호 확인란을 입력해주세요.')
+            ToastPop({
+                toastOpenYn: true,
+                type: 'warning',
+                message: "비밀번호 확인란을 입력해주세요.",
+                options: {
+                    sec: false
+                }
+            });
+            return;
         }
 
         if(singUpInputValue.userPw !== singUpInputValue.userPwCheck) {
-            alert('비밀번호가 일치하지 않습니다.');
+            ToastPop({
+                toastOpenYn: true,
+                type: 'warning',
+                message: "비밀번호가 일치하지 않습니다.",
+                options: {
+                    sec: false
+                }
+            });
+            return;
         }
 
         const headers = {
@@ -199,6 +237,7 @@ function Login() {
                 setLoading(false);
                 if (res.data) {
                     setCheckNumberBox(true);
+                    ToastPop({toastOpenYn: true, type: 'info', message: "입력하신 이메일로 인증번호가 발송되었습니다."});
                 }
             })
             .catch()
@@ -246,7 +285,11 @@ function Login() {
     return (
         <MDBContainer fluid>
             {/*모달 호출 샘플*/}
-            { modalFormState.open ? <ModalPop modalForm = {modalFormState}/> : null}
+            <ModalPop open = {modalFormState.open}
+                      setPopup = {setModalFormState}
+                      message = {modalFormState.message}
+                      title = {modalFormState.title}
+                      callback = {modalFormState.callback}/>
 
             {/*로딩바 호출 샘플*/}
             <div>

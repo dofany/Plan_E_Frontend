@@ -8,22 +8,28 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Login from "./pages/login/Login";
 import Main from "./pages/main/Main";
 import Nav from "./pages/Nav";
+import ToastPop from "./common/component/toast/ToastPop";
+import ModalPop from "./common/component/modal/ModalPop";
+import React, {useState} from "react";
+
 
 
 
 function App() {
   return (
-      // <Login/>
-      <BrowserRouter>
-        <Nav />
-          <Routes>
-            <Route exact path="/" element={<Login/>} />
-            <Route exact path="/login" element={<Login/>} />
-            <Route exact path="/main" element={<Main/>} />
-          {/* 전달할 props가 있을경우 아래와 같이 */}
-          {/*<Route exact path="/info" render={() => <Info userInfo={userInfo} />} />*/}
-          </Routes>
-      </BrowserRouter>
+      <>
+          <ToastPop/>
+          <BrowserRouter>
+            <Nav />
+              <Routes>
+                <Route exact path="/" element={<Login/>} />
+                <Route exact path="/login" element={<Login/>} />
+                <Route exact path="/main" element={<Main/>} />
+              {/* 전달할 props가 있을경우 아래와 같이 */}
+              {/*<Route exact path="/info" render={() => <Info userInfo={userInfo} />} />*/}
+              </Routes>
+          </BrowserRouter>
+      </>
   );
 }
 

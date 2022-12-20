@@ -45,11 +45,11 @@ const LeftMenu = () => {
 
     /**
      * 모달 처리 샘플
-     * @type {{callback: null, text: string, title: string, open: boolean}}
+     * @type {{callback: null, message: string, title: string, open: boolean}}
      */
     const modalForm = {
         title: '',
-        text: '',
+        message: '',
         open: false,
         callback: null
     };
@@ -70,11 +70,10 @@ const LeftMenu = () => {
 
 
     // 모달 호출 함수 샘플
-    function modalOpen(title, text, callback) {
+    function modalOpen(title, message, callback) {
         setModalFormState({
-            ...modalFormState,
             title: title,
-            text: text,
+            message: message,
             open: true,
             callback: callback
         });
@@ -129,7 +128,12 @@ const LeftMenu = () => {
     }
     return (
         <>
-            { modalFormState.open ? <ModalPop modalForm = {modalFormState}/> : null}
+            <ModalPop open = {modalFormState.open}
+                      setPopup = {setModalFormState}
+                      message = {modalFormState.message}
+                      title = {modalFormState.title}
+                      callback = {modalFormState.callback}/>
+
             <Modal show={userPop}>
                 <PersonalProfile popEvent = {popEvent}></PersonalProfile>
             </Modal>
