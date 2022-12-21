@@ -107,22 +107,33 @@ function Login() {
         });
     }
 
+
     // 로그인 버튼 클릭 이벤트
     const loginClick = () => {
+        console.log(loginInputValue);
         const headers = {
             'Content-Type' : 'application/json'
         }
         // setShowLoading(true);
         setLoading(true);
+
+        /* request 파트 */ 
         axios.post('/api/user/login', {
-                'userId': loginInputValue.inputEmail,
-                'userPw': loginInputValue.inputPw
+                'inputEmail': loginInputValue.inputEmail,
+                'inputPw': loginInputValue.inputPw
             },
             {
             headers: headers
             }
         )
+
+        /* response 파트 */
         .then(res => {
+            console.log(res.data);
+            // 유형 1) 아이디 또는 패스워드가 일치하지 않습니다. N 이고 1,2,3
+
+            // 유형 2) 패스워드 틀림 5번 이상  N이고 4
+            
             // setShowLoading(false);
 
             // setLoading(false);
@@ -139,9 +150,9 @@ function Login() {
             //     console.log('======================','로그인 성공')
             //     sessionStorage.setItem('user_id', inputId)
             // }
-            // 작업 완료 되면 페이지 이동(새로고침)
+            // 작업 완료 되면 페이지 이동(새로고침)   -> Y 와 5
             setLoading(false);
-            if (res.data === 'Y') {
+            if (res.data.sucesYn === 'Y' && res.data.loginAthnType === '5') {
                 document.location.href = '/main'
             }
         })
