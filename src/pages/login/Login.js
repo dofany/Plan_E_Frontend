@@ -64,7 +64,7 @@ function Login() {
     // 로그인 입력값
     const [loginInputValue, setLoginInputValue] = useState(loginForm);
     // 회원가입 입력값
-    const [singUpInputValue, setSignUpInputValue] = useState(loginForm);
+    const [signUpInputValue, setSignUpInputValue] = useState(loginForm);
 
     // 로딩바 표시 상태값
     const [loading, setLoading] = useState(false);
@@ -75,8 +75,6 @@ function Login() {
 
     // 패스워드 찾기_패스워드 변경 상태값
     const [changePwClickEv, setChangePwClickEv] = useState(false);
-
-
 
     // 입력 Form 초기화
     const formInit = () => {
@@ -102,7 +100,7 @@ function Login() {
     // 회원가입 입력값 변경 감지
     const handleSignUpInputValue = (e) => {
         setSignUpInputValue({
-            ...singUpInputValue,
+            ...signUpInputValue,
             [e.target.name]: e.target.value
         });
     }
@@ -110,6 +108,33 @@ function Login() {
 
     // 로그인 버튼 클릭 이벤트
     const loginClick = () => {
+        
+        // 로그인 페이지 이메일 미입력
+        if(loginInputValue.inputEmail === '') {
+            ToastPop({
+                toastOpenYn: true,
+                type: 'warning',
+                message: "이메일을 입력해주세요.",
+                options: {
+                    sec: 5000
+                }
+            });
+            return;
+        }
+
+        // 로그인 페이지 패스워드 미입력
+        if(loginInputValue.inputPw === '') {
+            ToastPop({
+                toastOpenYn: true,
+                type: 'warning',
+                message: "패스워드를 입력해주세요.",
+                options: {
+                    sec: 5000
+                }
+            });
+            return;
+        }
+        
         console.log(loginInputValue);
         const headers = {
             'Content-Type' : 'application/json'
@@ -168,65 +193,96 @@ function Login() {
     }
 
 
-    // 가입신청 버튼 클릭
-    const requestSignUp = () => {
+        // 가입신청 버튼 클릭
+        const requestSignUp = () => {
 
         setCheckNumberBox(false);
-        if(singUpInputValue.userNm === '') {
+        if(signUpInputValue.userNm === '') {
             ToastPop({
                 toastOpenYn: true,
                 type: 'warning',
                 message: "이름을 입력해주세요.",
                 options: {
-                    sec: false
+                    sec: 5000
                 }
             });
             return;
         }
 
-        if(singUpInputValue.userEmail === '') {
+        // 회원가입 이메일 정규식
+        const emailCheckSignUp = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+
+        if(signUpInputValue.userEmail === '') {
             ToastPop({
                 toastOpenYn: true,
                 type: 'warning',
                 message: "이메일 주소를 입력해주세요.",
                 options: {
-                    sec: false
+                    sec: 5000
                 }
             });
             return;
         }
 
-        if(singUpInputValue.userPw === '') {
+        // 회원가입 이메일 형식 확인
+        if(!emailCheckSignUp.test(signUpInputValue.userEmail)) {
+            ToastPop({
+                toastOpenYn: true,
+                type: 'warning',
+                message: "정확한 이메일 형식을 입력해주세요.",
+                options: {
+                    sec: 5000
+                }
+            });
+            return;
+        }
+        
+        // 패스워드 정규식 (최소8자, 최소 1개의 문자, 최소 1개의 숫자, 최소 1개의 특수문자)
+        const pwCheckSignUp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/
+
+        if(signUpInputValue.userPw === '') {
             ToastPop({
                 toastOpenYn: true,
                 type: 'warning',
                 message: "비밀번호를 입력해주세요.",
                 options: {
-                    sec: false
+                    sec: 5000
                 }
             });
             return;
         }
 
-        if(singUpInputValue.userPwCheck === '') {
+        if(!pwCheckSignUp.test(signUpInputValue.userPw)){
+            ToastPop({
+                toastOpenYn: true,
+                type: 'warning',
+                message: "패스워드는 8자 이상, 특수문자, 문자 숫자를 한 개 이상 포함해야 합니다.",
+                options: {
+                    sec: 5000
+                }
+            });
+            return;
+        }
+
+        if(signUpInputValue.userPwCheck === '') {
             ToastPop({
                 toastOpenYn: true,
                 type: 'warning',
                 message: "비밀번호 확인란을 입력해주세요.",
                 options: {
-                    sec: false
+                    sec: 5000
                 }
             });
             return;
         }
 
-        if(singUpInputValue.userPw !== singUpInputValue.userPwCheck) {
+        if(signUpInputValue.userPw !== signUpInputValue.userPwCheck) {
             ToastPop({
                 toastOpenYn: true,
                 type: 'warning',
                 message: "비밀번호가 일치하지 않습니다.",
                 options: {
-                    sec: false
+                    sec: 5000
                 }
             });
             return;
@@ -235,11 +291,12 @@ function Login() {
         const headers = {
             'Content-Type' : 'application/json'
         }
+
         // setShowLoading(true);
         setLoading(true);
         axios.post('/api/user/signUp', {
-                'userEmail': singUpInputValue.userEmail,
-                'userNm' : singUpInputValue.userNm
+                'userEmail': signUpInputValue.userEmail,
+                'userNm' : signUpInputValue.userNm
             },
             {
                 headers: headers
@@ -261,7 +318,7 @@ function Login() {
 
     // 회원가입 인증번호 확인 요청
     const requestSignUpCheck = () => {
-        alert('인증키 입력값 : ' + singUpInputValue.checkNumber);
+        alert('인증키 입력값 : ' + signUpInputValue.checkNumber);
         // 요청 서비스 call
 
     }
@@ -389,7 +446,7 @@ function Login() {
                                           type='name'
                                           size="lg"
                                           name='userNm'
-                                          value={ singUpInputValue.userNm }
+                                          value={ signUpInputValue.userNm }
                                           onChange={ handleSignUpInputValue }
                                           disabled={ checkNumberBox }
                                           required/>
@@ -401,7 +458,7 @@ function Login() {
                                           type='email'
                                           size="lg"
                                           name='userEmail'
-                                          value={ singUpInputValue.userEmail }
+                                          value={ signUpInputValue.userEmail }
                                           onChange={ handleSignUpInputValue }
                                           disabled={ checkNumberBox }
                                           required/>
@@ -413,7 +470,7 @@ function Login() {
                                           type='password'
                                           size="lg"
                                           name='userPw'
-                                          value={ singUpInputValue.userPw }
+                                          value={ signUpInputValue.userPw }
                                           onChange={ handleSignUpInputValue }
                                           disabled={ checkNumberBox }
                                           required/>
@@ -425,7 +482,7 @@ function Login() {
                                           type='password'
                                           size="lg"
                                           name='userPwCheck'
-                                          value={ singUpInputValue.userPwCheck }
+                                          value={ signUpInputValue.userPwCheck }
                                           onChange={ handleSignUpInputValue }
                                           disabled={ checkNumberBox }
                                           required/>
@@ -448,7 +505,7 @@ function Login() {
                                               size="lg"
                                               maxLength="6"
                                               name='checkNumber'
-                                              value={ singUpInputValue.checkNumber }
+                                              value={ signUpInputValue.checkNumber }
                                               onChange={ handleSignUpInputValue }
                                               autoFocus={true}
                                               required>
@@ -506,7 +563,7 @@ function Login() {
                                           type='name'
                                           size="lg"
                                           name='userNm'
-                                          value={ singUpInputValue.userNm }
+                                          value={ signUpInputValue.userNm }
                                           onChange={ handleSignUpInputValue }
                                           required/>
 
@@ -517,7 +574,7 @@ function Login() {
                                           type='email'
                                           size="lg"
                                           name='userEmail'
-                                          value={ singUpInputValue.userEmail }
+                                          value={ signUpInputValue.userEmail }
                                           onChange={ handleSignUpInputValue }
                                           required/>
 
