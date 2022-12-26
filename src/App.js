@@ -19,7 +19,7 @@ import {CookiesProvider} from "react-cookie";
 function App() {
   return (
       <>
-          <CookiesProvider>
+          <CookiesProvider/>
           <ToastPop/>
           <BrowserRouter>
             <Nav />
@@ -31,7 +31,7 @@ function App() {
               {/*<Route exact path="/info" render={() => <Info userInfo={userInfo} />} />*/}
               </Routes>
           </BrowserRouter>
-          </CookiesProvider>
+          {/*</CookiesProvider>*/}
       </>
   );
 }
