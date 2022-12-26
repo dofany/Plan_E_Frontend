@@ -10,7 +10,7 @@ import {toast, ToastContainer} from "react-toastify";
  * @returns {JSX.Element}
  * @constructor
  */
-function ToastPop({toastOpenYn, type, message, options}) {
+function ToastPop({toastOpenYn, type, message, options, callback}) {
     if (toastOpenYn) {
         if(options === null || options === undefined) {
             options = {
@@ -32,29 +32,30 @@ function ToastPop({toastOpenYn, type, message, options}) {
             pauseOnHover: (options.pauseOnHover === undefined || options.pauseOnHover === null) ? true : options.pauseOnHover,
             draggable: (options.draggable === undefined || options.draggable === null) ? true : options.draggable,
             progress: (options.progress === undefined || options.progress === null) ? undefined : options.progress,
-            theme: (options.theme === undefined || options.theme === null) ? "light" : options.theme
+            theme: (options.theme === undefined || options.theme === null) ? "light" : options.theme,
+            onClose: (callback === undefined || callback === null) ? null : callback,
         };
 
         let notify;
         switch (type) {
             case 'success' :
-                notify = () => toast.success(message, toastOptions);
+                toast.success(message, toastOptions);
                 break;
             case 'warning' :
-                notify = () => toast.warning(message, toastOptions);
+                toast.warning(message, toastOptions);
                 break;
             case 'error':
-                notify = () => toast.error(message, toastOptions);
+                toast.error(message, toastOptions);
                 break;
             case 'info':
-                notify = () => toast.info(message, toastOptions);
+                toast.info(message, toastOptions);
                 break;
             default:
-                notify = () => toast.default(message, toastOptions);
+                toast.default(message, toastOptions);
                 break;
         }
 
-        notify();
+        // notify();
     }
 
 
