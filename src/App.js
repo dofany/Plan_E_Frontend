@@ -11,6 +11,7 @@ import Nav from "./pages/Nav";
 import ToastPop from "./common/component/toast/ToastPop";
 import ModalPop from "./common/component/modal/ModalPop";
 import React, {useState} from "react";
+import {CookiesProvider} from "react-cookie";
 
 
 
@@ -18,6 +19,7 @@ import React, {useState} from "react";
 function App() {
   return (
       <>
+          <CookiesProvider>
           <ToastPop/>
           <BrowserRouter>
             <Nav />
@@ -29,6 +31,7 @@ function App() {
               {/*<Route exact path="/info" render={() => <Info userInfo={userInfo} />} />*/}
               </Routes>
           </BrowserRouter>
+          </CookiesProvider>
       </>
   );
 }

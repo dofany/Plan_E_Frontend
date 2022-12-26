@@ -17,6 +17,7 @@ import Timer from "../../common/component/date/Timer";
 import ModalPop from "../../common/component/modal/ModalPop";
 import 'react-toastify/dist/ReactToastify.css';
 import ToastPop from "../../common/component/toast/ToastPop";
+import {useCookies} from "react-cookie";
 
 /**
  * 로그인 기능
@@ -25,9 +26,15 @@ import ToastPop from "../../common/component/toast/ToastPop";
  */
 function Login() {
 
+    // 쿠키 정보 셋팅
+    const [cookies, setCookie] = useCookies(['rememberCheckBox', 'planE_id', 'planE_pw']);
+    const [rememberCheckBox, setRememberCheckBox] = useState(cookies.rememberCheckBox === "true" ? true : false);
+
+
+    // 쿠키 정보에 따라 초기화 값 변경
     const loginForm = {
-        inputEmail: '',
-        inputPw: '',
+        inputEmail: (cookies.rememberCheckBox === 'true' && cookies.planE_id !== undefined) ? cookies.planE_id : '',
+        inputPw: (cookies.rememberCheckBox === 'true' && cookies.planE_pw !== undefined) ? cookies.planE_pw : '',
         userNm: '',
         userPw: '',
         userEmail: '',
@@ -35,7 +42,6 @@ function Login() {
         checkNumber: ''
     };
 
-    const [textInputRef, setTextInputRef] = useState(false);
 
     /**
      * 모달 처리 샘플
@@ -108,6 +114,15 @@ function Login() {
 
     // 로그인 버튼 클릭 이벤트
     const loginClick = () => {
+
+        // 현재 체크박스 상태 쿠키 저장
+        setCookie('rememberCheckBox', rememberCheckBox);
+
+        // 체크박스 활성시 계정 정보 저장
+        if(rememberCheckBox) {
+            setCookie('planE_id', loginInputValue.inputEmail);
+            setCookie('planE_pw', loginInputValue.inputPw);
+        }
         
         // 로그인 페이지 이메일 미입력
         if(loginInputValue.inputEmail === '') {
@@ -353,6 +368,11 @@ function Login() {
 
     }
 
+    // 체크박스 클릭 이벤트
+    const rememberCheckBoxClick = () => {
+        setRememberCheckBox(rememberCheckBox ? false : true);
+    }
+
 
 
     return (
@@ -403,6 +423,8 @@ function Login() {
                                           required/>
 
                                 <MDBCheckbox name='flexCheck' id='flexCheckDefault' className='mb-4'
+                                             onChange={rememberCheckBoxClick}
+                                             checked={rememberCheckBox}
                                              label='Remember password'/>
 
                                 <MDBBtn size='lg'
