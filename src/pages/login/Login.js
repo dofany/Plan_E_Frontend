@@ -169,13 +169,6 @@ function Login() {
 
         /* response 파트 */
         .then(res => {
-            console.log(res.data);
-            // 유형 1) 아이디 또는 패스워드가 일치하지 않습니다. N 이고 1,2,3
-
-            // 유형 2) 패스워드 틀림 5번 이상  N이고 4
-            
-            // setShowLoading(false);
-
             // setLoading(false);
             // if(res.data.userId === undefined){
             //     // id 일치하지 않는 경우 userId = undefined, msg = '입력하신 id 가 일치하지 않습니다.'
@@ -190,16 +183,31 @@ function Login() {
             //     console.log('======================','로그인 성공')
             //     sessionStorage.setItem('user_id', inputId)
             // }
-            // 작업 완료 되면 페이지 이동(새로고침)   -> Y 와 5
             setLoading(false);
-            if (res.data.sucesYn === 'Y' && res.data.loginAthnType === '5') {
+                if(res.data.sucesYn === 'N' && ( res.data.loginAthnType === '1'
+                        || res.data.loginAthnType === '2' || res.data.loginAthnType === '4')) {
+                ToastPop({
+                    toastOpenYn: true,
+                    type: 'error',
+                    message: "아이디 또는 패스워드가 일치하지 않습니다.",
+                    options: {
+                        sec: 5000,
+                    },
+                });
+            } else if(res.data.sucesYn === 'N' && res.data.loginAthnType === '3') {
+                ToastPop({
+                    toastOpenYn: true,
+                    type: 'error',
+                    message: "비밀번호 5회 오류로 사용이 제한된 계정입니다. 관리자에게 문의해주세요.",
+                    options: {
+                        sec: 5000,
+                    },
+                });
+            } else if (res.data.sucesYn === 'Y' && res.data.loginAthnType === '5') {  
                 document.location.href = '/main'
-            }
+            }  
         })
         .catch()
-
-        // document.location.href = '/'
-
     }
 
     // 회원가입 버튼 클릭
@@ -345,6 +353,50 @@ function Login() {
     }
 
     const requestChangePw = () => {
+
+        const headers = {
+            'Content-Type' : 'application/json'
+        }
+
+        setLoading(true);
+
+            /* request 파트 */ 
+            axios.post('/api/user/pwChg', {
+                'inputEmail': signUpInputValue.userEmail,
+                'userName': signUpInputValue.userNm
+            },
+            {
+            headers: headers
+            }
+        )
+            /* response 파트 */
+            .then(res => {
+                
+                setLoading(false);
+                
+                if(res.data.resultYn === true) {
+                    ToastPop({
+                        toastOpenYn: true,
+                        type: 'success',
+                        message: "입력하신 이메일로 임시 비밀번호가 발급되었습니다.",
+                        options: {
+                            sec: 5000,
+                        },
+                        callback: () => document.location.href = '/login'
+                    });
+                    
+                } else {
+                        ToastPop({
+                            toastOpenYn: true,
+                            type: 'error',
+                            message: "입력하신 정보를 확인해주세요.",
+                            options: {
+                                sec: 5000
+                            }
+                        }); 
+                }
+            })
+            .catch()
 
     }
 
