@@ -42,7 +42,6 @@ function Login() {
         checkNumber: ''
     };
 
-
     /**
      * 모달 처리 샘플
      * @type {{callback: null, message: string, title: string, open: boolean}}
@@ -341,9 +340,69 @@ function Login() {
 
     // 회원가입 인증번호 확인 요청
     const requestSignUpCheck = () => {
-        alert('인증키 입력값 : ' + signUpInputValue.checkNumber);
-        // 요청 서비스 call
+        const headers = {
+            'Content-Type' : 'application/json'
+        }
 
+        setLoading(true);
+
+            /* request 파트 */ 
+            axios.post('/api/mail/emailCheck', {
+                'email': signUpInputValue.userEmail,
+                'emailAuthnNum': signUpInputValue.checkNumber
+            },
+            {
+            headers: headers
+            }
+        )
+            /* response 파트 */
+            .then(res => {
+                if(res.data.resCd === "4") {
+                    ToastPop({
+                        toastOpenYn: true,
+                        type: 'success',
+                        message: "회원가입이 완료되었습니다. 로그인 후 이용해 주세요.",
+                        options: {
+                            sec: 1500,
+                        },
+                        callback: () => {
+                            setLoading(false);
+                            document.location.href = '/login'
+                        }
+                    });
+                } else if(res.data.resCd === "2") {
+                    setLoading(false);
+                        ToastPop({
+                            toastOpenYn: true,
+                            type: 'error',
+                            message: "인증시간이 초과하였습니다. 인증번호를 재발급하세요.",
+                            options: {
+                                sec: 5000
+                            }
+                        }); 
+                } else if(res.data.resCd === "3") {
+                    setLoading(false);
+                    ToastPop({
+                        toastOpenYn: true,
+                        type: 'error',
+                        message: "입력하신 인증번호가 일치하지 않습니다.",
+                        options: {
+                            sec: 5000
+                        }
+                    }); 
+                } else if(res.data.resCd === "1") {
+                    setLoading(false);
+                    ToastPop({
+                        toastOpenYn: true,
+                        type: 'error',
+                        message: "오류가 발생했습니다. 인증번호를 재발급하세요.",
+                        options: {
+                            sec: 5000
+                        }
+                    }); 
+                }
+            })
+            .catch()
     }
 
     // 패스워드 찾기 버튼 클릭
