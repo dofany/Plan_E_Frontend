@@ -149,7 +149,6 @@ function Login() {
             return;
         }
         
-        console.log(loginInputValue);
         const headers = {
             'Content-Type' : 'application/json'
         }
@@ -157,9 +156,9 @@ function Login() {
         setLoading(true);
 
         /* request 파트 */ 
-        axios.post('/api/user/login', {
-                'inputEmail': loginInputValue.inputEmail,
-                'inputPw': loginInputValue.inputPw
+        axios.post('/api/userAthn/login', {
+                'userEmail': loginInputValue.inputEmail,
+                'userPw': loginInputValue.inputPw
             },
             {
             headers: headers
@@ -168,20 +167,6 @@ function Login() {
 
         /* response 파트 */
         .then(res => {
-            // setLoading(false);
-            // if(res.data.userId === undefined){
-            //     // id 일치하지 않는 경우 userId = undefined, msg = '입력하신 id 가 일치하지 않습니다.'
-            //     console.log('======================',res.data.msg)
-            //     alert('입력하신 id 가 일치하지 않습니다.')
-            // } else if(res.data.userId === null){
-            //     // id는 있지만, pw 는 다른 경우 userId = null , msg = undefined
-            //     console.log('======================','입력하신 비밀번호 가 일치하지 않습니다.')
-            //     alert('입력하신 비밀번호 가 일치하지 않습니다.')
-            // } else if(res.data.userId === inputId) {
-            //     // id, pw 모두 일치 userId = userId1, msg = undefined
-            //     console.log('======================','로그인 성공')
-            //     sessionStorage.setItem('user_id', inputId)
-            // }
             setLoading(false);
                 if(res.data.sucesYn === 'N' && ( res.data.loginAthnType === '1'
                         || res.data.loginAthnType === '2' || res.data.loginAthnType === '4')) {
@@ -316,17 +301,27 @@ function Login() {
 
         // setShowLoading(true);
         setLoading(true);
-        axios.post('/api/user/signUp', {
+        axios.post('/api/userAthn/signUp', {
                 'userEmail': signUpInputValue.userEmail,
-                'userNm' : signUpInputValue.userNm
+                'userNm' : signUpInputValue.userNm,
+                // 'userPw' : signUpInputValue.userPw,
+                // 'user'
             },
             {
                 headers: headers
             }
         )
             .then(res => {
+
                 setLoading(false);
-                if (res.data) {
+                if (res.data.result === false) {
+                    var msg = res.data.resultMsg
+                    ToastPop({
+                        toastOpenYn: true,
+                        type: 'error',
+                        message: msg
+                    });
+                } else {
                     setCheckNumberBox(true);
                     ToastPop({
                         toastOpenYn: true,
@@ -340,15 +335,26 @@ function Login() {
 
     // 회원가입 인증번호 확인 요청
     const requestSignUpCheck = () => {
+
+        if(signUpInputValue.checkNumber === '') {
+            ToastPop({
+                toastOpenYn: true,
+                type: 'warning',
+                message: "인증번호를 입력해주세요.",
+                options: {
+                    sec: 3000
+                }
+            });
+            return;
+        }
+
         const headers = {
             'Content-Type' : 'application/json'
         }
-
         setLoading(true);
-
             /* request 파트 */ 
-            axios.post('/api/mail/emailCheck', {
-                'email': signUpInputValue.userEmail,
+            axios.post('/api/userAthn/emailCheck', {
+                'userEmail': signUpInputValue.userEmail,
                 'emailAuthnNum': signUpInputValue.checkNumber
             },
             {
@@ -357,6 +363,7 @@ function Login() {
         )
             /* response 파트 */
             .then(res => {
+                
                 if(res.data.resCd === "4") {
                     ToastPop({
                         toastOpenYn: true,
@@ -420,8 +427,8 @@ function Login() {
         setLoading(true);
 
             /* request 파트 */ 
-            axios.post('/api/user/pwChg', {
-                'inputEmail': signUpInputValue.userEmail,
+            axios.post('/api/userAthn/pwChg', {
+                'userEmail': signUpInputValue.userEmail,
                 'userName': signUpInputValue.userNm
             },
             {
