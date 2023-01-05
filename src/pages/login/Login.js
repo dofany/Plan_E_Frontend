@@ -18,6 +18,7 @@ import ModalPop from "../../common/component/modal/ModalPop";
 import 'react-toastify/dist/ReactToastify.css';
 import ToastPop from "../../common/component/toast/ToastPop";
 import {useCookies} from "react-cookie";
+import { Link } from 'react-router-dom';
 
 /**
  * 로그인 기능
@@ -157,7 +158,7 @@ function Login() {
 
         /* request 파트 */ 
         axios.post('/api/userAthn/login', {
-                'userEmail': loginInputValue.inputEmail,
+                'email': loginInputValue.inputEmail,
                 'userPw': loginInputValue.inputPw
             },
             {
@@ -302,10 +303,8 @@ function Login() {
         // setShowLoading(true);
         setLoading(true);
         axios.post('/api/userAthn/signUp', {
-                'userEmail': signUpInputValue.userEmail,
-                'userNm' : signUpInputValue.userNm,
-                // 'userPw' : signUpInputValue.userPw,
-                // 'user'
+                'email': signUpInputValue.userEmail,
+                'userNm' : signUpInputValue.userNm
             },
             {
                 headers: headers
@@ -354,7 +353,9 @@ function Login() {
         setLoading(true);
             /* request 파트 */ 
             axios.post('/api/userAthn/emailCheck', {
-                'userEmail': signUpInputValue.userEmail,
+                'email': signUpInputValue.userEmail,
+                'userNm': signUpInputValue.userNm,
+                'userPw':signUpInputValue.userPw,
                 'emailAuthnNum': signUpInputValue.checkNumber
             },
             {
@@ -545,11 +546,11 @@ function Login() {
                                              checked={rememberCheckBox}
                                              label='Remember password'/>
 
-                                <MDBBtn size='lg'
-                                        style={{ backgroundColor: '#26B7E6' }}
+                                    <MDBBtn size='lg'
+                                            style={{ backgroundColor: '#26B7E6' }}
                                         onClick={ loginClick }>
-                                    Login
-                                </MDBBtn>
+                                        Login
+                                    </MDBBtn>
 
 
                                 <hr className="my-4"/>
