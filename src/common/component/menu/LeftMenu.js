@@ -1,7 +1,7 @@
 
 //import useState hook to create menu collapse state
 import React, { useState } from "react";
-
+import axios from "axios";
 //import react pro sidebar components
 import {
     ProSidebar,
@@ -26,7 +26,8 @@ import {CgUserlane} from "react-icons/cg";
 import PersonalProfile from "../../../user/component/profile/UserProfile";
 import {Modal} from "react-bootstrap";
 import ModalPop from "../modal/ModalPop";
-
+import ToastPop from "../toast/ToastPop";
+import {useCookies} from "react-cookie";
 
 const LeftMenu = () => {
 
@@ -96,7 +97,11 @@ const LeftMenu = () => {
                 // 모든 state, form 초기화
                 stateInit();
                 formInit();
-                document.location.href = '/login'
+                axios.get("/api/auth/sessionLogout").then(res => {
+                    if(res.data === "Y") {
+                        document.location.href = '/';
+                    } 
+                });
             }
             // 창을 닫을때("취소")
             else {

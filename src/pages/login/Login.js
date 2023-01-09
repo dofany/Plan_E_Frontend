@@ -189,10 +189,28 @@ function Login() {
                     },
                 });
             } else if (res.data.sucesYn === 'Y' && res.data.loginAthnType === '5') {  
-                document.location.href = '/main'
+                session();
             }  
         })
         .catch()
+    }
+
+    const session = () => {
+        
+        axios.post('/api/auth/sessionLogin', {
+            'email': loginInputValue.inputEmail,
+            'userPw': loginInputValue.inputPw
+        }, {
+            'Content-Type' : "application/json"
+           }
+        ).then(response => {
+            if(response.data === "Y"){
+                document.location.href = '/main'
+            } else {
+                return;
+            }
+            
+        });
     }
 
     // 회원가입 버튼 클릭
