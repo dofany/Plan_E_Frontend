@@ -20,10 +20,11 @@ export const CommonAxios = (url, params, methodType, callback) => {
                 if(response.response.status === 403) {
                     alert("세션이 만료되었습니다.");
                     document.location.href = "/";
+                } else {
+                    alert("요청에 실패하였습니다.");
+                    return;
                 }
-            } else {
-                alert("요청에 실패하였습니다.");
-            }
+            } 
         })
     }, [] );
 }

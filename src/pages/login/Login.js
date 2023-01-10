@@ -112,6 +112,31 @@ function Login() {
     }
 
 
+    // 로그인 버튼 엔터 클릭 이벤트
+    const loginOnKeyPress = (e) => {
+        if(e.key === 'Enter') {
+            loginClick();
+        }
+    }
+
+    // 회원가입 버튼 엔터 클릭 이벤트
+    const signUpOnKeyPress = (e) => {
+        if(e.key === 'Enter' && checkNumberBox) {
+            requestSignUpCheck();
+            
+        } else if(e.key === 'Enter' && !checkNumberBox) {
+            requestSignUp();
+
+        }
+    }
+
+    // 패스워드 찾기 버튼 엔터 클릭 이벤트
+    const changePwOnKeyPress = (e) => {
+        if(e.key === 'Enter') {
+            requestChangePw();
+        }
+    }
+
     // 로그인 버튼 클릭 이벤트
     const loginClick = () => {
 
@@ -155,7 +180,7 @@ function Login() {
         }
         // setShowLoading(true);
         setLoading(true);
-
+        
         /* request 파트 */ 
         axios.post('/api/userAthn/login', {
                 'email': loginInputValue.inputEmail,
@@ -196,7 +221,7 @@ function Login() {
     }
 
     const session = () => {
-        
+    
         axios.post('/api/auth/sessionLogin', {
             'email': loginInputValue.inputEmail,
             'userPw': loginInputValue.inputPw
@@ -218,7 +243,7 @@ function Login() {
         setSignUpClickEv(true);
     }
 
-
+    
         // 가입신청 버튼 클릭
         const requestSignUp = () => {
 
@@ -447,8 +472,8 @@ function Login() {
 
             /* request 파트 */ 
             axios.post('/api/userAthn/pwChg', {
-                'userEmail': signUpInputValue.userEmail,
-                'userName': signUpInputValue.userNm
+                'email': signUpInputValue.userEmail,
+                'userNm': signUpInputValue.userNm
             },
             {
             headers: headers
@@ -459,7 +484,7 @@ function Login() {
                 
                 setLoading(false);
                 
-                if(res.data.resultYn === true) {
+                if(res.data.result === true) {
                     ToastPop({
                         toastOpenYn: true,
                         type: 'success',
@@ -546,6 +571,7 @@ function Login() {
                                           name='inputEmail'
                                           value={ loginInputValue.inputEmail }
                                           onChange={ handleLoginInputValue }
+                                          onKeyDown={ loginOnKeyPress }
                                           />
 
                                 <MDBInput wrapperClass='mb-4 w-100'
@@ -557,6 +583,7 @@ function Login() {
                                           name='inputPw'
                                           value={ loginInputValue.inputPw }
                                           onChange={ handleLoginInputValue }
+                                          onKeyDown={ loginOnKeyPress }
                                           required/>
 
                                 <MDBCheckbox name='flexCheck' id='flexCheckDefault' className='mb-4'
@@ -607,6 +634,7 @@ function Login() {
                                           name='userNm'
                                           value={ signUpInputValue.userNm }
                                           onChange={ handleSignUpInputValue }
+                                          onKeyDown= { signUpOnKeyPress }
                                           disabled={ checkNumberBox }
                                           required/>
 
@@ -619,6 +647,7 @@ function Login() {
                                           name='userEmail'
                                           value={ signUpInputValue.userEmail }
                                           onChange={ handleSignUpInputValue }
+                                          onKeyDown= { signUpOnKeyPress }
                                           disabled={ checkNumberBox }
                                           required/>
 
@@ -631,6 +660,7 @@ function Login() {
                                           name='userPw'
                                           value={ signUpInputValue.userPw }
                                           onChange={ handleSignUpInputValue }
+                                          onKeyDown= { signUpOnKeyPress }
                                           disabled={ checkNumberBox }
                                           required/>
 
@@ -643,6 +673,7 @@ function Login() {
                                           name='userPwCheck'
                                           value={ signUpInputValue.userPwCheck }
                                           onChange={ handleSignUpInputValue }
+                                          onKeyDown= { signUpOnKeyPress }
                                           disabled={ checkNumberBox }
                                           required/>
 
@@ -666,6 +697,7 @@ function Login() {
                                               name='checkNumber'
                                               value={ signUpInputValue.checkNumber }
                                               onChange={ handleSignUpInputValue }
+                                              onKeyDown= { signUpOnKeyPress }
                                               autoFocus={true}
                                               required>
                                     </MDBInput>
@@ -724,6 +756,7 @@ function Login() {
                                           name='userNm'
                                           value={ signUpInputValue.userNm }
                                           onChange={ handleSignUpInputValue }
+                                          onKeyDown={ changePwOnKeyPress }
                                           required/>
 
                                 <MDBInput wrapperClass='mb-4 w-100'
@@ -735,6 +768,7 @@ function Login() {
                                           name='userEmail'
                                           value={ signUpInputValue.userEmail }
                                           onChange={ handleSignUpInputValue }
+                                          onKeyDown={ changePwOnKeyPress }
                                           required/>
 
 

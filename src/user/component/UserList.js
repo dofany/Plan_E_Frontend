@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
-import { CommonAxios } from '../../common/Common';
+import React, {useState, useEffect} from 'react';
+import {AuthLoginErr, CommonAxios} from '../../common/Common';
 import Loading from "../../common/component/Loading/Loading";
+import axios from "axios";
 
 function UserList() {
 
@@ -19,6 +20,24 @@ function UserList() {
         setUsers(data);
         setLoading(false);
     }
+
+    // useEffect(() => {
+    //     axios(
+    //         {
+    //             url : "/api/user/userFind",
+    //             method : 'get',
+    //             contentType : "application/json; charset=utf=8",
+    //             enctype : "multipart/form-data", // form태그 데이터 전송
+    //             params : params
+                
+    //         }
+    //     ).then(function(response){
+    //         setUsers(response.data);
+    //         setLoading(false);
+    //     }).catch(function(response){
+    //         AuthLoginErr(response);
+    //     });
+    // }, [])
 
     return(
         <div>
