@@ -28,6 +28,7 @@ import {Modal} from "react-bootstrap";
 import ModalPop from "../modal/ModalPop";
 import ToastPop from "../toast/ToastPop";
 import {useCookies} from "react-cookie";
+import { AuthLoginErr } from "../../Common";
 
 const LeftMenu = () => {
 
@@ -101,6 +102,8 @@ const LeftMenu = () => {
                     if(res.data === "Y") {
                         document.location.href = '/';
                     } 
+                }).catch(res => {
+                    AuthLoginErr(res);
                 });
             }
             // 창을 닫을때("취소")
