@@ -19,6 +19,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ToastPop from "../../common/component/toast/ToastPop";
 import {useCookies} from "react-cookie";
 import { Link } from 'react-router-dom';
+import { AuthLoginErr } from '../../common/Common';
 
 /**
  * 로그인 기능
@@ -214,27 +215,10 @@ function Login() {
                     },
                 });
             } else if (res.data.sucesYn === 'Y' && res.data.loginAthnType === '5') {  
-                session();
+                document.location.href = '/main';
             }  
-        })
-        .catch()
-    }
-
-    const session = () => {
-    
-        axios.post('/api/auth/sessionLogin', {
-            'email': loginInputValue.inputEmail,
-            'userPw': loginInputValue.inputPw
-        }, {
-            'Content-Type' : "application/json"
-           }
-        ).then(response => {
-            if(response.data === "Y"){
-                document.location.href = '/main'
-            } else {
-                return;
-            }
-            
+        }).catch(res => {
+            AuthLoginErr(res);
         });
     }
 
