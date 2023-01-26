@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import ToastPop from './component/toast/ToastPop';
-import Loading from './component/Loading/Loading';
 
 
 // api 호출 공통 함수
@@ -13,7 +12,6 @@ import Loading from './component/Loading/Loading';
 //     headers: headers
 // }
 export const CommonPostAxios = (url, param, callback) => {
-    useEffect(() => {
         axios.post('/api'+url, param,
         {
             headers : 'contentType : application/json; charset=utf=8;'            
@@ -26,11 +24,9 @@ export const CommonPostAxios = (url, param, callback) => {
         }).catch((res) => {
             AuthLoginErr(res); 
         })
-    }, [] );
 }
 
 export const CommonGetAxios = (url, param, callback) => { 
-    useEffect(() => {
         axios.get('/api'+url, {
             params : param
         },
@@ -45,7 +41,6 @@ export const CommonGetAxios = (url, param, callback) => {
         }).catch((res) => {
             AuthLoginErr(res); 
         })
-    }, [] );
 }
 
 export const AuthLoginErr = (res) => {
