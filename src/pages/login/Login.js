@@ -356,40 +356,66 @@ function Login() {
             return;
         }
 
-        const headers = {
-            'Content-Type' : 'application/json'
-        }
+        // const headers = {
+        //     'Content-Type' : 'application/json'
+        // }
 
         // setShowLoading(true);
-        setLoading(true);
-        axios.post('/api/userAthn/signUp', {
-                'email': signUpInputValue.userEmail,
-                'userNm' : signUpInputValue.userNm
-            },
-            {
-                headers: headers
-            }
-        )
-            .then(res => {
+        // setLoading(true);
 
-                setLoading(false);
-                if (res.data.result === false) {
-                    var msg = res.data.resultMsg
-                    ToastPop({
-                        toastOpenYn: true,
-                        type: 'error',
-                        message: msg
-                    });
-                } else {
-                    setCheckNumberBox(true);
-                    ToastPop({
-                        toastOpenYn: true,
-                        type: 'info',
-                        message: "입력하신 이메일로 인증번호가 발송되었습니다."
-                    });
-                }
-            })
-            .catch()
+        // axios.post('/api/userAthn/signUp', {
+        //         'email': signUpInputValue.userEmail,
+        //         'userNm' : signUpInputValue.userNm
+        //     },
+        //     {
+        //         headers: headers
+        //     }
+        // )
+        //     .then(res => {
+
+        //         setLoading(false);
+        //         if (res.data.result === false) {
+        //             var msg = res.data.resultMsg
+        //             ToastPop({
+        //                 toastOpenYn: true,
+        //                 type: 'error',
+        //                 message: msg
+        //             });
+        //         } else {
+        //             setCheckNumberBox(true);
+        //             ToastPop({
+        //                 toastOpenYn: true,
+        //                 type: 'info',
+        //                 message: "입력하신 이메일로 인증번호가 발송되었습니다."
+        //             });
+        //         }
+        //     })
+        //     .catch()
+        setLoading(true);
+        const param = {
+            'email': signUpInputValue.userEmail,
+            'userNm' : signUpInputValue.userNm
+        }
+        CommonPostAxios("/userAthn/signUp", param, CallbackSignup);
+    }
+
+    function CallbackSignup(data) {
+        setLoading(false);
+        if (data.result === false) {
+            var msg = data.resultMsg
+            ToastPop({
+                toastOpenYn: true,
+                type: 'error',
+                message: msg
+            });
+        } else {
+            setCheckNumberBox(true);
+            ToastPop({
+                toastOpenYn: true,
+                type: 'info',
+                message: "입력하신 이메일로 인증번호가 발송되었습니다."
+            });
+        }
     }
 
     // 회원가입 인증번호 확인 요청
@@ -407,70 +433,125 @@ function Login() {
             return;
         }
 
-        const headers = {
-            'Content-Type' : 'application/json'
-        }
-        setLoading(true);
-            /* request 파트 */ 
-            axios.post('/api/userAthn/emailCheck', {
-                'email': signUpInputValue.userEmail,
-                'userNm': signUpInputValue.userNm,
-                'userPw':signUpInputValue.userPw,
-                'emailAuthnNum': signUpInputValue.checkNumber
-            },
-            {
-            headers: headers
-            }
-        )
-            /* response 파트 */
-            .then(res => {
+        // const headers = {
+        //     'Content-Type' : 'application/json'
+        // }
+        // setLoading(true);
+        //     /* request 파트 */ 
+        //     axios.post('/api/userAthn/emailCheck', {
+        //         'email': signUpInputValue.userEmail,
+        //         'userNm': signUpInputValue.userNm,
+        //         'userPw':signUpInputValue.userPw,
+        //         'emailAuthnNum': signUpInputValue.checkNumber
+        //     },
+        //     {
+        //     headers: headers
+        //     }
+        // )
+        //     /* response 파트 */
+        //     .then(res => {
                 
-                if(res.data.resCd === "4") {
-                    ToastPop({
-                        toastOpenYn: true,
-                        type: 'success',
-                        message: "회원가입이 완료되었습니다. 로그인 후 이용해 주세요.",
-                        options: {
-                            sec: 1500,
-                        },
-                        callback: () => {
-                            setLoading(false);
-                            document.location.href = '/login'
-                        }
-                    });
-                } else if(res.data.resCd === "2") {
+        //         if(res.data.resCd === "4") {
+        //             ToastPop({
+        //                 toastOpenYn: true,
+        //                 type: 'success',
+        //                 message: "회원가입이 완료되었습니다. 로그인 후 이용해 주세요.",
+        //                 options: {
+        //                     sec: 1500,
+        //                 },
+        //                 callback: () => {
+        //                     setLoading(false);
+        //                     document.location.href = '/login'
+        //                 }
+        //             });
+        //         } else if(res.data.resCd === "2") {
+        //             setLoading(false);
+        //                 ToastPop({
+        //                     toastOpenYn: true,
+        //                     type: 'error',
+        //                     message: "인증시간이 초과하였습니다. 인증번호를 재발급하세요.",
+        //                     options: {
+        //                         sec: 5000
+        //                     }
+        //                 }); 
+        //         } else if(res.data.resCd === "3") {
+        //             setLoading(false);
+        //             ToastPop({
+        //                 toastOpenYn: true,
+        //                 type: 'error',
+        //                 message: "입력하신 인증번호가 일치하지 않습니다.",
+        //                 options: {
+        //                     sec: 5000
+        //                 }
+        //             }); 
+        //         } else if(res.data.resCd === "1") {
+        //             setLoading(false);
+        //             ToastPop({
+        //                 toastOpenYn: true,
+        //                 type: 'error',
+        //                 message: "오류가 발생했습니다. 인증번호를 재발급하세요.",
+        //                 options: {
+        //                     sec: 5000
+        //                 }
+        //             }); 
+        //         }
+        //     })
+        //     .catch()
+        setLoading(true);
+        const param = {
+            'email': signUpInputValue.userEmail,
+            'userNm': signUpInputValue.userNm,
+            'userPw':signUpInputValue.userPw,
+            'emailAuthnNum': signUpInputValue.checkNumber
+        }
+        CommonPostAxios("/userAthn/emailCheck", param, CallbackEmailCheck);
+    }
+
+    function CallbackEmailCheck(data) {
+        if(data.resCd === "4") {
+            ToastPop({
+                toastOpenYn: true,
+                type: 'success',
+                message: "회원가입이 완료되었습니다. 로그인 후 이용해 주세요.",
+                options: {
+                    sec: 1500,
+                },
+                callback: () => {
                     setLoading(false);
-                        ToastPop({
-                            toastOpenYn: true,
-                            type: 'error',
-                            message: "인증시간이 초과하였습니다. 인증번호를 재발급하세요.",
-                            options: {
-                                sec: 5000
-                            }
-                        }); 
-                } else if(res.data.resCd === "3") {
-                    setLoading(false);
-                    ToastPop({
-                        toastOpenYn: true,
-                        type: 'error',
-                        message: "입력하신 인증번호가 일치하지 않습니다.",
-                        options: {
-                            sec: 5000
-                        }
-                    }); 
-                } else if(res.data.resCd === "1") {
-                    setLoading(false);
-                    ToastPop({
-                        toastOpenYn: true,
-                        type: 'error',
-                        message: "오류가 발생했습니다. 인증번호를 재발급하세요.",
-                        options: {
-                            sec: 5000
-                        }
-                    }); 
+                    document.location.href = '/login'
                 }
-            })
-            .catch()
+            });
+        } else if(data.resCd === "2") {
+            setLoading(false);
+                ToastPop({
+                    toastOpenYn: true,
+                    type: 'error',
+                    message: "인증시간이 초과하였습니다. 인증번호를 재발급하세요.",
+                    options: {
+                        sec: 5000
+                    }
+                }); 
+        } else if(data.resCd === "3") {
+            setLoading(false);
+            ToastPop({
+                toastOpenYn: true,
+                type: 'error',
+                message: "입력하신 인증번호가 일치하지 않습니다.",
+                options: {
+                    sec: 5000
+                }
+            }); 
+        } else if(data.resCd === "1") {
+            setLoading(false);
+            ToastPop({
+                toastOpenYn: true,
+                type: 'error',
+                message: "오류가 발생했습니다. 인증번호를 재발급하세요.",
+                options: {
+                    sec: 5000
+                }
+            }); 
+        }
     }
 
     // 패스워드 찾기 버튼 클릭

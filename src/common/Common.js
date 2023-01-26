@@ -26,7 +26,8 @@ export const CommonPostAxios = (url, param, callback) => {
         })
 }
 
-export const CommonGetAxios = (url, param, callback) => { 
+export const CommonGetAxios = (url, param, callback) => {
+    useEffect(() => { 
         axios.get('/api'+url, {
             params : param
         },
@@ -41,6 +42,7 @@ export const CommonGetAxios = (url, param, callback) => {
         }).catch((res) => {
             AuthLoginErr(res); 
         })
+    }, []);
 }
 
 export const AuthLoginErr = (res) => {
