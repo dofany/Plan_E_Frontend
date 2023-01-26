@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {AuthLoginErr, CommonAxios} from '../../common/Common';
+import {AuthLoginErr, CommonGetAxios, ScommonAxios} from '../../common/Common';
 import Loading from "../../common/component/Loading/Loading";
 import axios from "axios";
 
@@ -11,8 +11,8 @@ function UserList() {
 
     // api 호출 예시
     // params : input 값(object 타입으로 넣어야함)
-    const params = {email : "test12@gmail.com"}
-    CommonAxios("/user/userFind", params ,"get", getData);
+    const param = {email : 'test12@gmail.com'}
+    CommonGetAxios("/user/userFind", param , getData);
 
     // 콜백함수(우선적 테스트용 => api 호출이 안될시 무한으로 로딩바가 생성됨)
     // 지속적 개선할 예정

@@ -19,7 +19,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ToastPop from "../../common/component/toast/ToastPop";
 import {useCookies} from "react-cookie";
 import { Link } from 'react-router-dom';
-import { AuthLoginErr } from '../../common/Common';
+import { AuthLoginErr, CommonPostAxios, ScommonAxios } from '../../common/Common';
 
 /**
  * 로그인 기능
@@ -176,50 +176,83 @@ function Login() {
             return;
         }
         
-        const headers = {
-            'Content-Type' : 'application/json'
-        }
+        // const headers = {
+        //     'Content-Type' : 'application/json'
+        // }
         // setShowLoading(true);
-        setLoading(true);
-        
-        /* request 파트 */ 
-        axios.post('/api/userAthn/login', {
-                'email': loginInputValue.inputEmail,
-                'userPw': loginInputValue.inputPw
-            },
-            {
-            headers: headers
-            }
-        )
+        // setLoading(true);
 
-        /* response 파트 */
-        .then(res => {
-            setLoading(false);
-                if(res.data.sucesYn === 'N' && ( res.data.loginAthnType === '1'
-                        || res.data.loginAthnType === '2' || res.data.loginAthnType === '4')) {
-                ToastPop({
-                    toastOpenYn: true,
-                    type: 'error',
-                    message: "아이디 또는 패스워드가 일치하지 않습니다.",
-                    options: {
-                        sec: 5000,
-                    },
-                });
-            } else if(res.data.sucesYn === 'N' && res.data.loginAthnType === '3') {
-                ToastPop({
-                    toastOpenYn: true,
-                    type: 'error',
-                    message: "비밀번호 5회 오류로 사용이 제한된 계정입니다. 관리자에게 문의해주세요.",
-                    options: {
-                        sec: 5000,
-                    },
-                });
-            } else if (res.data.sucesYn === 'Y' && res.data.loginAthnType === '5') {  
-                document.location.href = '/main';
-            }  
-        }).catch(res => {
-            AuthLoginErr(res);
-        });
+        /* request 파트 */ 
+        // axios.post('/api/userAthn/login', {
+        //         'email': loginInputValue.inputEmail,
+        //         'userPw': loginInputValue.inputPw
+        //     },
+        //     {
+        //     headers: headers
+        //     }
+        // )
+
+        // /* response 파트 */
+        // .then(res => {
+        //     setLoading(false);
+        //         if(res.data.sucesYn === 'N' && ( res.data.loginAthnType === '1'
+        //                 || res.data.loginAthnType === '2' || res.data.loginAthnType === '4')) {
+        //         ToastPop({
+        //             toastOpenYn: true,
+        //             type: 'error',
+        //             message: "아이디 또는 패스워드가 일치하지 않습니다.",
+        //             options: {
+        //                 sec: 5000,
+        //             },
+        //         });
+        //     } else if(res.data.sucesYn === 'N' && res.data.loginAthnType === '3') {
+        //         ToastPop({
+        //             toastOpenYn: true,
+        //             type: 'error',
+        //             message: "비밀번호 5회 오류로 사용이 제한된 계정입니다. 관리자에게 문의해주세요.",
+        //             options: {
+        //                 sec: 5000,
+        //             },
+        //         });
+        //     } else if (res.data.sucesYn === 'Y' && res.data.loginAthnType === '5') {  
+        //         document.location.href = '/main';
+        //     }  
+        // }).catch(res => {
+        //     AuthLoginErr(res);
+        // });
+
+        const param = {
+            'email': loginInputValue.inputEmail,
+            'userPw': loginInputValue.inputPw
+        }
+
+        CommonPostAxios("/userAthn/login", param, CallbackLogin);
+    }
+
+    function CallbackLogin(data) {
+        setLoading(false);
+        if(data.sucesYn === 'N' && ( data.loginAthnType === '1'
+                || data.loginAthnType === '2' || data.loginAthnType === '4')) {
+            ToastPop({
+                toastOpenYn: true,
+                type: 'error',
+                message: "아이디 또는 패스워드가 일치하지 않습니다.",
+                options: {
+                    sec: 5000,
+                },
+            });
+        } else if(data.sucesYn === 'N' && data.loginAthnType === '3') {
+            ToastPop({
+                toastOpenYn: true,
+                type: 'error',
+                message: "비밀번호 5회 오류로 사용이 제한된 계정입니다. 관리자에게 문의해주세요.",
+                options: {
+                    sec: 5000,
+                },
+            });
+        } else if (data.sucesYn === 'Y' && data.loginAthnType === '5') {  
+            document.location.href = '/main';
+        }
     }
 
     // 회원가입 버튼 클릭

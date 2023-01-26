@@ -1,19 +1,45 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import ToastPop from './component/toast/ToastPop';
+import Loading from './component/Loading/Loading';
+
 
 // api 호출 공통 함수
-
-export const CommonAxios = (url, params, methodType, callback) => {
+// axios.post('/api/userAthn/signUp', {
+//     'email': signUpInputValue.userEmail,
+//     'userNm' : signUpInputValue.userNm
+// },
+// {
+//     headers: headers
+// }
+export const CommonPostAxios = (url, param, callback) => {
     useEffect(() => {
-        axios(
-            {
-                url : "/api" + url,
-                params : params,
-                method : methodType,
-                contentType : "application/json; charset=utf=8",
-                enctype : "multipart/form-data" // form태그 데이터 전송
-            }
+        axios.post('/api'+url, param,
+        {
+            headers : 'contentType : application/json; charset=utf=8;'            
+        },
+        {
+            enctype : "multipart/form-data"
+        }
+        ).then((res) => {
+            callback(res.data);
+        }).catch((res) => {
+            AuthLoginErr(res); 
+        })
+    }, [] );
+}
+
+export const CommonGetAxios = (url, param, callback) => { 
+    useEffect(() => {
+        axios.get('/api'+url, {
+            params : param
+        },
+        {
+            headers : 'contentType : application/json; charset=utf=8'
+        },
+        {
+            enctype : "multipart/form-data"
+        }
         ).then((res) => {
             callback(res.data);
         }).catch((res) => {
@@ -23,6 +49,7 @@ export const CommonAxios = (url, params, methodType, callback) => {
 }
 
 export const AuthLoginErr = (res) => {
+    console.log(res);
     if(res.response.status !== 200) {
         if(res.response.status === 403) {
             ToastPop({
