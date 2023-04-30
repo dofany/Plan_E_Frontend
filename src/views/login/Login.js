@@ -33,8 +33,8 @@ function Login() {
 
     // 쿠키 정보에 따라 초기화 값 변경
     const loginForm = {
-        inputEmail: (cookies.rememberCheckBox === 'true' && cookies.planE_id !== undefined) ? cookies.planE_id : '',
-        inputPw: (cookies.rememberCheckBox === 'true' && cookies.planE_pw !== undefined) ? cookies.planE_pw : '',
+        inputEmail: (cookies.rememberCheckBox === 'true' && cookies.planE_id !== undefined) ? window.atob(cookies.planE_id) : '',
+        inputPw: (cookies.rememberCheckBox === 'true' && cookies.planE_pw !== undefined) ? window.atob(cookies.planE_pw) : '',
         userNm: '',
         userPw: '',
         userEmail: '',
@@ -144,8 +144,8 @@ function Login() {
 
         // 체크박스 활성시 계정 정보 저장
         if(rememberCheckBox) {
-            setCookie('planE_id', loginInputValue.inputEmail);
-            setCookie('planE_pw', loginInputValue.inputPw);
+            setCookie('planE_id', window.btoa(loginInputValue.inputEmail));
+            setCookie('planE_pw', window.btoa(loginInputValue.inputPw));
         }
         
         // 로그인 페이지 이메일 미입력
