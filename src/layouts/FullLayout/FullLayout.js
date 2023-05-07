@@ -31,18 +31,16 @@ const PageWrapper = experimentalStyled("div")(({ theme }) => ({
   },
 }));
 
-const FullLayout = () => {
+const FullLayout = ({ isModalOpenYn }) => {
   //
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-
-  const [isModalOpenYn, setIsModalOpenYn] = useState(false);
   
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
 
   return (
-    <MainWrapper>
+    <MainWrapper className={`modal-backdrop ${isModalOpenYn ? 'show' : ''}`}>
       <Header
         sx={{
           paddingLeft: isSidebarOpen && lgUp ? "265px" : "",
