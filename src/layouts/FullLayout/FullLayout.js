@@ -20,7 +20,7 @@ const MainWrapper = experimentalStyled("div")(({ theme }) => ({
 const PageWrapper = experimentalStyled("div")(({ theme }) => ({
   display: "flex",
   flex: "1 1 auto",
-  overflow: "hidden",
+  overflow: "auto",
 
   backgroundColor: theme.palette.background.default,
   [theme.breakpoints.up("lg")]: {
