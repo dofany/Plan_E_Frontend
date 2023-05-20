@@ -4,10 +4,15 @@ import MenuOutlinedIcon from "@material-ui/icons/MenuOutlined";
 import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
 import AddToPhotosOutlinedIcon from "@material-ui/icons/AddToPhotosOutlined";
 
-import PersonAdd from "@material-ui/icons/PersonAdd";
 import Settings from "@material-ui/icons/Settings";
 import Logout from "@material-ui/icons/Logout";
 import axios from "axios";
+
+import {
+  Add,
+  Edit,
+  CalendarTodayOutlined
+} from "@material-ui/icons/";
 
 import {
   AppBar,
@@ -23,10 +28,13 @@ import {
 } from "@material-ui/core";
 
 import userimg from "../../../assets/images/users/user.jpg";
-import { AuthLoginErr } from "../../../components/Common";
+import { AuthLoginErr, CommonPostAxios } from "../../../components/Common";
 import { Modal } from "react-bootstrap";
 import ModalPop from "../../../components/modal/ModalPop";
 import PersonalProfile from "../../../components/profile/UserProfile"
+import CalendarAdd from "../../../components/calendar/CalendarAdd";
+import CalendarEdit from "../../../components/calendar/CalendarEdit";
+import ToastPop from "../../../components/Toast/ToastPop";
 
 const Header = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -85,7 +93,10 @@ const Header = (props) => {
   const popEvent = (i) => {
     if(i) {
       setUserPop(false);
-    }
+      setCalendarAdd(false);
+      setCalendarEditModal(false);
+      setCheckList(new Set());
+    } 
   }
 
   const handleClick = (event) => {
@@ -112,14 +123,110 @@ const Header = (props) => {
 
   const handleClick5 = (event) => {
     setAnchorEl5(event.currentTarget);
+    calendarSearch();
   };
 
   const handleClose5 = () => {
     setAnchorEl5(null);
   };
 
+  // 캘린더 생성, 수정 버튼 클릭 상태값
+  const [calendarAdd, setCalendarAdd] = useState(false);
+  const [calendarList, setCalendarList] = useState([]);
+  const [calendarEdit, setCalendarEdit] = useState(false);
+  const [calendarEditModal, setCalendarEditModal] = useState(false);
+  const [checkList, setCheckList] = useState(new Set());
+  const [calendarName, setCalendarName] = useState('');
+  const [calendarContent, setCalendarContent] = useState('');
+  const [checkboxStates, setCheckboxStates] = useState(Array(calendarList.length).fill(false));
+
+  const param = { userId : ""};
+
+  // 캘린더 목록을 뿌려주기 위한 axios
+  const calendarSearch = () => {
+    CommonPostAxios("/calendar/findAll", param, callbackList);
+    
+  }
+
+  const callbackList = (data) => {
+    setCalendarList(data);
+    console.log(calendarList);
+  }
+
+  const handleCheckboxChange = (event, index) => {
+    const id = event.target.id;
+    const isChecked = event.target.checked;
+    
+    // 체크박스 체크 여부 업데이트
+    if(isChecked) {
+      checkList.add(id);
+      setCheckList(checkList);
+    } else if(!isChecked && checkList.has(id)){
+      checkList.delete(id);
+      setCheckList(checkList);
+    } 
+
+    // 첫번째 체크박스만 disabled
+    setCheckboxStates((prevStates) => {
+      const updatedStates = [...prevStates];
+      updatedStates[index] = !updatedStates[index];
+      return updatedStates;
+    });
+
+    console.log(checkList);
+  };
+
+  // 2개 이상 체크 여부
+  const calendarEditOpen = () => {
+    if(checkList.size >= 2) {
+      ToastPop({
+        toastOpenYn: true,
+        type: 'warning',
+        message: "두 개 이상 체크할 수 없습니다.",
+        options: {
+            sec: 3000
+        }
+      });
+      return;
+
+    } else if(checkList.size < 1) {
+      ToastPop({
+        toastOpenYn: true,
+        type: 'warning',
+        message: "체크박스가 체크되어있지 않습니다.",
+        options: {
+            sec: 3000
+        }
+      });
+      return;
+      
+    } else {  
+
+      setCalendarEditModal(true);
+      const mySet = new Set(checkList);
+      const myArray = Array.from(mySet);
+
+      const caranderIdValue = myArray[0];
+      console.log(caranderIdValue); 
+
+      for(var i = 0; i < calendarList.length; i++) {
+        if(calendarList[i].calendarId === caranderIdValue) {
+          setCalendarName(calendarList[i].calendarName);
+          setCalendarContent(calendarList[i].calendarContent);
+        }
+      }
+      handleClose5();
+    }
+  }
+
   return (
     <>
+    <Modal show={calendarAdd}>
+      <CalendarAdd popEvent={popEvent}></CalendarAdd>
+    </Modal>
+    <Modal show={calendarEditModal}>
+      <CalendarEdit popEvent={popEvent} edit={checkList} calName={calendarName} calContent={calendarContent}></CalendarEdit>
+    </Modal>
     <ModalPop open = {modalFormState.open}
                       setPopup = {setModalFormState}
                       message = {modalFormState.message}
@@ -169,52 +276,92 @@ const Header = (props) => {
             },
           }}
         >
-          <MenuItem onClick={handleClose5}>
+          <MenuItem onClick={() => { setCalendarAdd(true); handleClose5();}}>
             <Avatar
-              sx={{
-                width: "35px",
-                height: "35px",
-              }}
-            />
+                sx={{
+                  width: "35px",
+                  height: "35px",
+                  backgroundColor: "#1A97F5",
+                }}
+              >
+              <Add/>
+            </Avatar>
             <Box
               sx={{
                 ml: 2,
               }}
             >
-              New account
+              캘린더 생성
+            </Box>
+          </MenuItem>
+          <MenuItem onClick={() => { !calendarEdit ?  setCalendarEdit(true) : setCalendarEdit(false); setCheckList(new Set()); console.log(calendarEdit);}}>
+            <Avatar
+              sx={{
+                width: "35px",
+                height: "35px",
+                backgroundColor: "#1A97F5",
+              }}
+            >
+            <Edit/>
+            </Avatar>
+            <Box
+              sx={{
+                ml: 2,
+              }}
+            >
+              캘린더 수정
             </Box>
           </MenuItem>
           <Divider />
-          <MenuItem onClick={handleClose5}>
-            <Avatar
-              sx={{
-                width: "35px",
-                height: "35px",
-              }}
-            />
+          {calendarList.map((item,index) => (
+          <MenuItem key={item.calendarId}>
+              {!calendarEdit ?
+              <Avatar
+                sx={{
+                  width: "35px",
+                  height: "35px",
+                  backgroundColor: "#1A97F5"
+                }}
+              >
+              <CalendarTodayOutlined/>
+              </Avatar> : 
+              <input 
+                id={item.calendarId}
+                name={`checkbox_${index}`}
+                type="checkbox" 
+                style={{
+                width: '35px',
+                height: '30px',
+                verticalAlign: 'middle',
+                backgroundColor: 'black'
+                }}
+                onChange={(e,index) => handleCheckboxChange(e,index)}
+                disabled={index === 0}
+                checked={checkboxStates[index]}
+              />
+            }
             <Box
               sx={{
                 ml: 2,
               }}
             >
-              New Page
+            {item.calendarName}
             </Box>
           </MenuItem>
-          <MenuItem onClick={handleClose5}>
-            <Avatar
-              sx={{
-                width: "35px",
-                height: "35px",
-              }}
-            />
-            <Box
-              sx={{
-                ml: 2,
-              }}
-            >
-              New Component
-            </Box>
-          </MenuItem>
+          ))}
+          <Divider />
+          {calendarEdit && 
+            <MenuItem>
+                <Box
+                sx={{
+                  ml: 2,
+                }}
+                style={{color:'red', textAlign:'center', marginLeft:'90px'}}
+                onClick={calendarEditOpen}
+                >
+                수정
+              </Box>
+            </MenuItem>}
         </Menu>
         <Box flexGrow={1} />
 

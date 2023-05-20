@@ -69,7 +69,7 @@ export const AuthLoginErr = (res) => {
                     sec: 2000,
                 },
                 callback: () => {
-                    document.location.href = '/'
+                    return;
                 }
             });
         }
