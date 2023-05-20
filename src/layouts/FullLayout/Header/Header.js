@@ -96,6 +96,7 @@ const Header = (props) => {
       setCalendarAdd(false);
       setCalendarEditModal(false);
       setCheckList(new Set());
+      setCalendarEdit(false);
     } 
   }
 
@@ -172,8 +173,6 @@ const Header = (props) => {
       updatedStates[index] = !updatedStates[index];
       return updatedStates;
     });
-
-    console.log(checkList);
   };
 
   // 2개 이상 체크 여부
