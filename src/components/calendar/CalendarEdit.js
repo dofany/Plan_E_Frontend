@@ -52,23 +52,47 @@ export default function CalendarEdit(props) {
 
   // 수정 저장
   const calendarEditSave = () => {
-    modalOpen("캘린더 수정", "캘린더를 수정하시겠습니까?",(data) => {
-      // 창을 닫을때("OK")
-      if(data) {
-        const param = {
-          'calendarName' : calendarName,
-          'calendarContent' : calendarContent,
-          'calendarId' : caranderIdValue
+    if(calendarName === '') {
+      ToastPop({
+        toastOpenYn: true,
+        type: 'warning',
+        message: "캘린더명을 입력해주세요.",
+        options: {
+            sec: 1500
         }
-        CommonPostAxios("/calendar/edit", param, callbackSave);
-      }
-      // 창을 닫을때("취소")
-      else {
-          // 모달 비활성
-          setModalFormState(modalForm);
-          return;
-      }
-    });  
+      });
+      return;
+
+    } else if(calendarContent === '') {
+      ToastPop({
+        toastOpenYn: true,
+        type: 'warning',
+        message: "내용을 입력해주세요.",
+        options: {
+            sec: 1500
+        }
+      });
+      return;
+
+    } else {
+      modalOpen("캘린더 수정", "캘린더를 수정하시겠습니까?",(data) => {
+        // 창을 닫을때("OK")
+        if(data) {
+          const param = {
+            'calendarName' : calendarName,
+            'calendarContent' : calendarContent,
+            'calendarId' : caranderIdValue
+          }
+          CommonPostAxios("/calendar/edit", param, callbackSave);
+        }
+        // 창을 닫을때("취소")
+        else {
+            // 모달 비활성
+            setModalFormState(modalForm);
+            return;
+        }
+      }); 
+    }   
   }
 
   const callbackSave = (data) => {

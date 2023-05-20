@@ -13,7 +13,7 @@ import { CommonPostAxios } from '../Common';
 import ToastPop from '../Toast/ToastPop';
 import ModalPop from '../modal/ModalPop';
 
-export default function CalendarAdd(props) {
+export default function CalendarAdd(props, {isModalOpenYn}) {
   // 저장버튼 클릭 이벤트
   const [calendarName, setCalendarName] = useState('');
   const [calendarContent, setCalendarContent] = useState('');
@@ -51,22 +51,44 @@ export default function CalendarAdd(props) {
   }
 
   const calendarSave = () => {
-    modalOpen("캘린더 생성", "캘린더를 생성하시겠습니까?",(data) => {
-      // 창을 닫을때("OK")
-      if(data) {
-        const param = {
-          'calendarName' : calendarName,
-          'calendarContent' : calendarContent,
+    if(calendarName === '') {
+      ToastPop({
+        toastOpenYn: true,
+        type: 'warning',
+        message: "캘린더명을 입력해주세요.",
+        options: {
+            sec: 1500
         }
-        CommonPostAxios("/calendar/add", param, callbackSave);
-      }
-      // 창을 닫을때("취소")
-      else {
-          // 모달 비활성
-          setModalFormState(modalForm);
-          return;
-      }
-    });
+      });
+      return;
+    } else if(calendarContent === '') {
+      ToastPop({
+        toastOpenYn: true,
+        type: 'warning',
+        message: "내용을 입력해주세요.",
+        options: {
+            sec: 1500
+        }
+      });
+      return;
+    } else {
+      modalOpen("캘린더 생성", "캘린더를 생성하시겠습니까?",(data) => {
+        // 창을 닫을때("OK")
+        if(data) {
+          const param = {
+            'calendarName' : calendarName,
+            'calendarContent' : calendarContent,
+          }
+          CommonPostAxios("/calendar/add", param, callbackSave);
+        }
+        // 창을 닫을때("취소")
+        else {
+            // 모달 비활성
+            setModalFormState(modalForm);
+            return;
+        }
+      });
+    }
   }
 
   const callbackSave = (data) => {
