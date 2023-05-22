@@ -157,7 +157,7 @@ export default function CalendarEdit(props) {
                       title = {modalFormState.title}
                       callback = {modalFormState.callback}/> 
     <MDBModalHeader>
-        <MDBModalTitle>켈린더 생성</MDBModalTitle>
+        <MDBModalTitle>켈린더 수정</MDBModalTitle>
         <MDBBtn className='btn-close' color='none' onClick={() => {props.popEvent(true);}}></MDBBtn>
     </MDBModalHeader>
     <MDBModalBody>
