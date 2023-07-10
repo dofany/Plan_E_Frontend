@@ -8,6 +8,8 @@ import Settings from "@material-ui/icons/Settings";
 import Logout from "@material-ui/icons/Logout";
 import axios from "axios";
 
+import eventBus from '../../../eventBus';
+
 import {
   Add,
   Edit,
@@ -175,6 +177,10 @@ const Header = (props) => {
     });
   };
 
+  const showCalendarContent = (data) => {
+    eventBus.emit('calendarId', data);
+  }
+
   // 2개 이상 체크 여부
   const calendarEditOpen = () => {
     if(checkList.size >= 2) {
@@ -313,7 +319,9 @@ const Header = (props) => {
           </MenuItem>
           <Divider />
           {calendarList.map((item,index) => (
-          <MenuItem key={item.calendarId}>
+          <MenuItem key={item.calendarId}
+              id={item.calendarId}
+              onClick={() => { /*setCalendarAdd(true);*/ handleClose5(); showCalendarContent(item.calendarId);}}>
               {!calendarEdit ?
               <Avatar
                 sx={{
